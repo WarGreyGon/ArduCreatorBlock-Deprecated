@@ -20,6 +20,8 @@ class BloqueArrastrable{
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
+        
+        console.log(this.getCategoriasAceptables())
     }
 
 
@@ -70,5 +72,28 @@ class BloqueArrastrable{
                 }
             }
         });
+    }
+
+    getCategoriasAceptables(): string {
+
+        let categoriasAceptables: string = '';
+
+        switch(this.categoria){
+
+            case 'EstructuraBasica':
+
+                categoriasAceptables += '.EstructuraBasica, .Funcion, .Variable';
+                break;
+            case 'Funcion':
+
+                categoriasAceptables += '.Funcion, .Variable';
+                break;
+            case 'Variable':
+
+                //No acepta ningun bloque
+                break;
+        }
+
+        return categoriasAceptables;
     }
 }

@@ -10,6 +10,7 @@ var BloqueArrastrable = (function () {
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
+        console.log(this.getCategoriasAceptables());
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
         var _this = this;
@@ -46,6 +47,21 @@ var BloqueArrastrable = (function () {
                 }
             }
         });
+    };
+    BloqueArrastrable.prototype.getCategoriasAceptables = function () {
+        var categoriasAceptables = '';
+        switch (this.categoria) {
+            case 'EstructuraBasica':
+                categoriasAceptables += '.EstructuraBasica, .Funcion, .Variable';
+                break;
+            case 'Funcion':
+                categoriasAceptables += '.Funcion, .Variable';
+                break;
+            case 'Variable':
+                //No acepta ningun bloque
+                break;
+        }
+        return categoriasAceptables;
     };
     return BloqueArrastrable;
 }());
