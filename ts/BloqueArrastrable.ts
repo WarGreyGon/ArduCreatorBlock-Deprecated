@@ -20,8 +20,8 @@ class BloqueArrastrable{
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
-        
-        console.log(this.getCategoriasAceptables())
+
+        // ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{console.log(categoria + " acepta " + c + ": " + this.esCategoriaAceptable(c))});
     }
 
 
@@ -29,71 +29,86 @@ class BloqueArrastrable{
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
-        let _this = this;
+        // let _this = this;
+        //El div sabe de que objeto BloqueArrastrable es atributo
         $(this.miDiv).data(this);
 
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
-            cursor: 'move'
+            cursor: 'move',
+            start: function(){
+
+            }
         });
 
+
         $(this.miDiv).droppable({
-            accept: ".BloqueArrastrable",
+
+            accept: '.BloqueArrastrable',
             tolerance: "touch",
-            over: function(evento: Event, bloqueQueManejo: JQuery) {
+            over: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
-                // bloqueQueSolapo.css('transform', 'scale(1.2)');
+                let bloqueQueManejo = ui.draggable;
+
+                // TODO: Borrar siguientes lineas (Testing)
+                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+                console.log(_thisBloqueQueSolapo.categoria + " acepta "  + _thisBloqueQueManejo.categoria + ": " +
+                    + _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria));
             },
-            out: function(evento: Event, bloqueQueManejo: JQuery) {
+            out: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
-                // bloqueQueSolapo.css('border', '0');
+                let bloqueQueManejo = ui.draggable;
+
+                //TODO: Implementar sacar bloque de otro
+                
             },
             drop: function (evento: Event, ui : JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
+                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-                //TODO: Añadir reglas de introduccion en funcion del tipo
-                if(true){
 
-                    let numeroBloquesQueContengo: number = _this.bloquesQueContengo.length;
+                if(_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+
+                    let numeroBloquesQueContengo: number = _thisBloqueQueManejo.bloquesQueContengo.length;
                     let miAlto = bloqueQueManejo.height();
 
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*miAlto + 30);
+                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*miAlto + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
 
-                    let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                    _thisBloqueQueSolapo.bloquesQueContengo.push(_this);
+                    _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 }
             }
         });
     }
 
-    getCategoriasAceptables(): string {
+    esCategoriaAceptable(categoriaDelDraggable: string): boolean {
 
-        let categoriasAceptables: string = '';
+        let esValido = false;
 
         switch(this.categoria){
 
             case 'EstructuraBasica':
 
-                categoriasAceptables += '.EstructuraBasica, .Funcion, .Variable';
+                ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
             case 'Funcion':
 
-                categoriasAceptables += '.Funcion, .Variable';
+                ['Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
             case 'Variable':
 
-                //No acepta ningun bloque
-                break;
+                return false;
         }
 
-        return categoriasAceptables;
+        return esValido;
     }
 }
