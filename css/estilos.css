@@ -37,11 +37,16 @@ li.dropdown{clear:both; }
     transition: 0.5s; cursor: pointer;}
 .subOpcionMenuBloques:hover{transform: scale(1.2);}
 
-
+/*Estilos de los bloques*/
+.EstructuraBasica{}
+.Funcion{}
+.Variable{}
 
 
 /*Estilos del area de codigo*/
 .areaCodigoGen{width: 29%; height: 100%; float: left; display: inline-block;}
+
+
 
 /**/
 .BloqueArrastrable{width: 100px; height: 100px; background-color: black; color: white; overflow: visible; z-index: 0; position: absolute; border: solid green 10px; border-right: none}

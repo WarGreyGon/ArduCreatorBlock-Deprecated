@@ -10,58 +10,68 @@ var BloqueArrastrable = (function () {
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
-        console.log(this.getCategoriasAceptables());
+        // ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{console.log(categoria + " acepta " + c + ": " + this.esCategoriaAceptable(c))});
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
-        var _this = this;
+        // let _this = this;
+        //El div sabe de que objeto BloqueArrastrable es atributo
         $(this.miDiv).data(this);
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
-            cursor: 'move'
+            cursor: 'move',
+            start: function () {
+            }
         });
         $(this.miDiv).droppable({
-            accept: ".BloqueArrastrable",
+            accept: '.BloqueArrastrable',
             tolerance: "touch",
-            over: function (evento, bloqueQueManejo) {
+            over: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
-                // bloqueQueSolapo.css('transform', 'scale(1.2)');
+                var bloqueQueManejo = ui.draggable;
+                // TODO: Borrar siguientes dos lineas
+                var _thisBloqueQueSolapo = bloqueQueSolapo.data();
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
+                console.log(_thisBloqueQueSolapo.categoria + " acepta " + _thisBloqueQueManejo.categoria + ": " +
+                    +_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria));
             },
-            out: function (evento, bloqueQueManejo) {
+            out: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
-                // bloqueQueSolapo.css('border', '0');
+                // let bloqueQueManejo = ui.draggable;
             },
             drop: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
                 var bloqueQueManejo = ui.draggable;
+                var _thisBloqueQueSolapo = bloqueQueSolapo.data();
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
                 //TODO: Añadir reglas de introduccion en funcion del tipo
-                if (true) {
-                    var numeroBloquesQueContengo = _this.bloquesQueContengo.length;
+                if (_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
+                    var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
                     var miAlto = bloqueQueManejo.height();
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * miAlto + 30);
+                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * miAlto + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
-                    var _thisBloqueQueSolapo = bloqueQueSolapo.data();
-                    _thisBloqueQueSolapo.bloquesQueContengo.push(_this);
+                    _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 }
             }
         });
     };
-    BloqueArrastrable.prototype.getCategoriasAceptables = function () {
-        var categoriasAceptables = '';
+    BloqueArrastrable.prototype.esCategoriaAceptable = function (categoriaDelDraggable) {
+        var esValido = false;
         switch (this.categoria) {
             case 'EstructuraBasica':
-                categoriasAceptables += '.EstructuraBasica, .Funcion, .Variable';
+                ['EstructuraBasica', 'Funcion', 'Variable'].forEach(function (c) { if (c == categoriaDelDraggable)
+                    esValido = true; });
                 break;
             case 'Funcion':
-                categoriasAceptables += '.Funcion, .Variable';
+                ['Funcion', 'Variable'].forEach(function (c) { if (categoriaDelDraggable.indexOf(c) + 1)
+                    esValido = true; });
                 break;
             case 'Variable':
-                //No acepta ningun bloque
-                break;
+                return false;
         }
-        return categoriasAceptables;
+        return esValido;
     };
     return BloqueArrastrable;
 }());
