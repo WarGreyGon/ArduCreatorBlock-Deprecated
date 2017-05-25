@@ -1,6 +1,6 @@
 class BloqueArrastrable{
 
-    _this: BloqueArrastrable;
+    //_this: BloqueArrastrable;
     miDiv: HTMLElement;
     categoria: string;
     tipo: string;
@@ -45,6 +45,7 @@ class BloqueArrastrable{
 
                 if (numeroBloquesQueContengo > 0) {
 
+                    //TODO: Englobar estas lineas en un metodo recursivo. Iterar sobre hijos, comprobar que tengan nietos, si se cumple: llamada recursiva
                     bloquesHijoDelQueManejo.forEach(b => {
 
                         $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
@@ -77,7 +78,7 @@ class BloqueArrastrable{
 
                 if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
 
-                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo));
+                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     let altoBloqueQueManejo = bloqueQueManejo.height();
 
@@ -92,7 +93,7 @@ class BloqueArrastrable{
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-
+                //TODO: Añadir comprobacion de que no es ya hijo del padre en el que intenta introducirse. (Bug que provoca jesus)
                 if(_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
