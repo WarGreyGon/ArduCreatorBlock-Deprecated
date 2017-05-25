@@ -10,16 +10,26 @@ var BloqueArrastrable = (function () {
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
-        // ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{console.log(categoria + " acepta " + c + ": " + this.esCategoriaAceptable(c))});
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
-        // let _this = this;
-        //El div sabe de que objeto BloqueArrastrable es atributo
+        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
         $(this.miDiv).data(this);
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
-            start: function () {
+            drag: function (evento, ui) {
+                // TODO: Arrastrar multiples padre con sus hijos
+                var bloqueQueManejo = ui.helper;
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
+                var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
+                var altoBloqueQueManejo = bloqueQueManejo.height();
+                var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
+                if (numeroBloquesQueContengo > 0) {
+                    bloquesHijoDelQueManejo.forEach(function (b) {
+                        $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
+                        $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b) * $(b.miDiv).height() + 40);
+                    });
+                }
             }
         });
         $(this.miDiv).droppable({
@@ -28,35 +38,45 @@ var BloqueArrastrable = (function () {
             over: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
                 var bloqueQueManejo = ui.draggable;
-                // TODO: Borrar siguientes dos lineas
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                console.log(_thisBloqueQueSolapo.categoria + " acepta " + _thisBloqueQueManejo.categoria + ": " +
-                    +_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria));
+                //TODO: Limitar zona de "tocado" como en blockly
             },
             out: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
-                // let bloqueQueManejo = ui.draggable;
+                var bloqueQueManejo = ui.draggable;
+                var _thisBloqueQueSolapo = bloqueQueSolapo.data();
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
+                if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1) {
+                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo));
+                    var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                    var altoBloqueQueManejo = bloqueQueManejo.height();
+                    bloqueQueManejo.css('border', '0');
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
+                }
             },
             drop: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
                 var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                //TODO: Añadir reglas de introduccion en funcion del tipo
                 if (_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
-                    var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
-                    var miAlto = bloqueQueManejo.height();
+                    var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                    var altoBloqueQueManejo = bloqueQueManejo.height();
+                    //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * miAlto + 40);
+                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * altoBloqueQueManejo + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
                     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 }
             }
         });
     };
+    // reDimensionarBloqueContenedor(bloqueQueManejo: BloqueArrastrable, bloqueQueSolapo: BloqueArrastrable): void {
+    //
+    // }
     BloqueArrastrable.prototype.esCategoriaAceptable = function (categoriaDelDraggable) {
         var esValido = false;
         switch (this.categoria) {
@@ -65,7 +85,7 @@ var BloqueArrastrable = (function () {
                     esValido = true; });
                 break;
             case 'Funcion':
-                ['Funcion', 'Variable'].forEach(function (c) { if (categoriaDelDraggable.indexOf(c) + 1)
+                ['Funcion', 'Variable'].forEach(function (c) { if (c == categoriaDelDraggable)
                     esValido = true; });
                 break;
             case 'Variable':

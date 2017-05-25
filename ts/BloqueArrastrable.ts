@@ -1,6 +1,6 @@
 class BloqueArrastrable{
 
-    _this: BloqueArrastrable;
+    //_this: BloqueArrastrable;
     miDiv: HTMLElement;
     categoria: string;
     tipo: string;
@@ -20,8 +20,6 @@ class BloqueArrastrable{
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
-
-        // ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{console.log(categoria + " acepta " + c + ": " + this.esCategoriaAceptable(c))});
     }
 
 
@@ -29,15 +27,31 @@ class BloqueArrastrable{
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
-        // let _this = this;
-        //El div sabe de que objeto BloqueArrastrable es atributo
+        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
         $(this.miDiv).data(this);
 
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
-            start: function(){
+            drag: function(evento: Event, ui: JQuery){
 
+                // TODO: Arrastrar multiples padre con sus hijos
+                let bloqueQueManejo = ui.helper;
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
+                let numeroBloquesQueContengo: number = _thisBloqueQueManejo.bloquesQueContengo.length;
+                let altoBloqueQueManejo = bloqueQueManejo.height();
+                let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
+
+                if (numeroBloquesQueContengo > 0) {
+
+                    //TODO: Englobar estas lineas en un metodo recursivo. Iterar sobre hijos, comprobar que tengan nietos, si se cumple: llamada recursiva
+                    bloquesHijoDelQueManejo.forEach(b => {
+
+                        $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
+                        $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
+                    });
+                }
             }
         });
 
@@ -50,20 +64,27 @@ class BloqueArrastrable{
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
-
-                // TODO: Borrar siguientes lineas (Testing)
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-                console.log(_thisBloqueQueSolapo.categoria + " acepta "  + _thisBloqueQueManejo.categoria + ": " +
-                    + _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria));
+
+                //TODO: Limitar zona de "tocado" como en blockly
             },
             out: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
+                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-                //TODO: Implementar sacar bloque de otro
-                
+                if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
+
+                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
+                    let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                    let altoBloqueQueManejo = bloqueQueManejo.height();
+
+                    bloqueQueManejo.css('border', '0');
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
+                }
             },
             drop: function (evento: Event, ui : JQuery) {
 
@@ -72,23 +93,29 @@ class BloqueArrastrable{
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-
+                //TODO: Añadir comprobacion de que no es ya hijo del padre en el que intenta introducirse. (Bug que provoca jesus)
                 if(_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
-                    let numeroBloquesQueContengo: number = _thisBloqueQueManejo.bloquesQueContengo.length;
-                    let miAlto = bloqueQueManejo.height();
+                    let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                    let altoBloqueQueManejo = bloqueQueManejo.height();
 
+                    //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*miAlto + 40);
+                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*altoBloqueQueManejo + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
 
                     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 }
             }
         });
     }
+
+
+    // reDimensionarBloqueContenedor(bloqueQueManejo: BloqueArrastrable, bloqueQueSolapo: BloqueArrastrable): void {
+    //
+    // }
 
     esCategoriaAceptable(categoriaDelDraggable: string): boolean {
 
