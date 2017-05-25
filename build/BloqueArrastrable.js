@@ -12,13 +12,24 @@ var BloqueArrastrable = (function () {
         this.arrastrarYSoltar(elementoContenedor);
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
-        // let _this = this;
-        //El div sabe de que objeto BloqueArrastrable es atributo
+        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
         $(this.miDiv).data(this);
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
-            start: function () {
+            drag: function (evento, ui) {
+                // TODO: Arrastrar multiples padre con sus hijos
+                var bloqueQueManejo = ui.helper;
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
+                var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
+                var altoBloqueQueManejo = bloqueQueManejo.height();
+                var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
+                if (numeroBloquesQueContengo > 0) {
+                    bloquesHijoDelQueManejo.forEach(function (b) {
+                        $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
+                        $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b) * $(b.miDiv).height() + 40);
+                    });
+                }
             }
         });
         $(this.miDiv).droppable({
@@ -29,23 +40,17 @@ var BloqueArrastrable = (function () {
                 var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                if (_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria))
-                    bloqueQueManejo.css('cursor', 'no-drop');
+                //TODO: Limitar zona de "tocado" como en blockly
             },
             out: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
                 var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                //TODO: Implementar sacar bloque de otro
                 if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1) {
                     _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo));
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
-                    var miAlto = bloqueQueManejo.height();
-                    // TODO:Borrar siguientes linea
-                    console.log(_thisBloqueQueSolapo.tipo + " se me ha salido " + _thisBloqueQueManejo.tipo);
-                    console.log(_thisBloqueQueSolapo.tipo + " tengo " + numeroBloquesQueContengo + " bloques: ");
-                    _thisBloqueQueSolapo.bloquesQueContengo.forEach(function (b) { console.log("\t" + b.tipo); });
+                    var altoBloqueQueManejo = bloqueQueManejo.height();
                     bloqueQueManejo.css('border', '0');
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
                 }
@@ -57,17 +62,14 @@ var BloqueArrastrable = (function () {
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 if (_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
-                    var miAlto = bloqueQueManejo.height();
+                    var altoBloqueQueManejo = bloqueQueManejo.height();
                     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * miAlto + 40);
+                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * altoBloqueQueManejo + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
                     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
-                    // TODO:Borrar siguiente linea
-                    console.log(_thisBloqueQueSolapo.tipo + " tengo " + numeroBloquesQueContengo + " bloques: ");
-                    _thisBloqueQueSolapo.bloquesQueContengo.forEach(function (b) { console.log("\t" + b.tipo); });
                 }
             }
         });

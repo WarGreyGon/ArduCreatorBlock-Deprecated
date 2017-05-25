@@ -27,15 +27,30 @@ class BloqueArrastrable{
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
-        // let _this = this;
-        //El div sabe de que objeto BloqueArrastrable es atributo
+        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
         $(this.miDiv).data(this);
 
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
-            start: function(){
+            drag: function(evento: Event, ui: JQuery){
 
+                // TODO: Arrastrar multiples padre con sus hijos
+                let bloqueQueManejo = ui.helper;
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
+                let numeroBloquesQueContengo: number = _thisBloqueQueManejo.bloquesQueContengo.length;
+                let altoBloqueQueManejo = bloqueQueManejo.height();
+                let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
+
+                if (numeroBloquesQueContengo > 0) {
+
+                    bloquesHijoDelQueManejo.forEach(b => {
+
+                        $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
+                        $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
+                    });
+                }
             }
         });
 
@@ -50,6 +65,8 @@ class BloqueArrastrable{
                 let bloqueQueManejo = ui.draggable;
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
+                //TODO: Limitar zona de "tocado" como en blockly
             },
             out: function(evento: Event, ui: JQuery) {
 
@@ -58,18 +75,11 @@ class BloqueArrastrable{
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-                //TODO: Implementar sacar bloque de otro
                 if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
 
                     _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo));
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
-                    let miAlto = bloqueQueManejo.height();
-
-                    // TODO:Borrar siguientes linea
-                    console.log(_thisBloqueQueSolapo.tipo + " se me ha salido " + _thisBloqueQueManejo.tipo)
-                    console.log(_thisBloqueQueSolapo.tipo + " tengo " + numeroBloquesQueContengo + " bloques: ")
-                    _thisBloqueQueSolapo.bloquesQueContengo.forEach(b => {console.log("\t" + b.tipo)});
-
+                    let altoBloqueQueManejo = bloqueQueManejo.height();
 
                     bloqueQueManejo.css('border', '0');
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
@@ -86,20 +96,16 @@ class BloqueArrastrable{
                 if(_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
-                    let miAlto = bloqueQueManejo.height();
+                    let altoBloqueQueManejo = bloqueQueManejo.height();
 
                     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*miAlto + 40);
+                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*altoBloqueQueManejo + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
 
                     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
-
-                    // TODO:Borrar siguiente linea
-                    console.log(_thisBloqueQueSolapo.tipo + " tengo " + numeroBloquesQueContengo + " bloques: ")
-                    _thisBloqueQueSolapo.bloquesQueContengo.forEach(b => {console.log("\t" + b.tipo)});
                 }
             }
         });
