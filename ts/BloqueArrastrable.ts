@@ -20,8 +20,6 @@ class BloqueArrastrable{
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
-
-        // ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{console.log(categoria + " acepta " + c + ": " + this.esCategoriaAceptable(c))});
     }
 
 
@@ -50,20 +48,32 @@ class BloqueArrastrable{
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
-
-                // TODO: Borrar siguientes lineas (Testing)
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-                console.log(_thisBloqueQueSolapo.categoria + " acepta "  + _thisBloqueQueManejo.categoria + ": " +
-                    + _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria));
             },
             out: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
+                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
                 //TODO: Implementar sacar bloque de otro
-                
+                if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
+
+                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo));
+                    let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                    let miAlto = bloqueQueManejo.height();
+
+                    // TODO:Borrar siguientes linea
+                    console.log(_thisBloqueQueSolapo.tipo + " se me ha salido " + _thisBloqueQueManejo.tipo)
+                    console.log(_thisBloqueQueSolapo.tipo + " tengo " + numeroBloquesQueContengo + " bloques: ")
+                    _thisBloqueQueSolapo.bloquesQueContengo.forEach(b => {console.log("\t" + b.tipo)});
+
+
+                    bloqueQueManejo.css('border', '0');
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
+                }
             },
             drop: function (evento: Event, ui : JQuery) {
 
@@ -75,20 +85,30 @@ class BloqueArrastrable{
 
                 if(_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
-                    let numeroBloquesQueContengo: number = _thisBloqueQueManejo.bloquesQueContengo.length;
+                    let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     let miAlto = bloqueQueManejo.height();
 
+                    //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
                     bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*miAlto + 40);
                     bloqueQueManejo.css('border', 'solid white 5px');
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
 
                     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
+
+                    // TODO:Borrar siguiente linea
+                    console.log(_thisBloqueQueSolapo.tipo + " tengo " + numeroBloquesQueContengo + " bloques: ")
+                    _thisBloqueQueSolapo.bloquesQueContengo.forEach(b => {console.log("\t" + b.tipo)});
                 }
             }
         });
     }
+
+
+    // reDimensionarBloqueContenedor(bloqueQueManejo: BloqueArrastrable, bloqueQueSolapo: BloqueArrastrable): void {
+    //
+    // }
 
     esCategoriaAceptable(categoriaDelDraggable: string): boolean {
 
