@@ -54,8 +54,8 @@ var BloqueArrastrable = (function () {
                 var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                //TODO: Añadir comprobacion de que no es ya hijo del padre en el que intenta introducirse. (Bug que provoca jesus)
-                if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
+                if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 &&
+                    _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     var altoBloqueQueManejo = bloqueQueManejo.height();
                     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
