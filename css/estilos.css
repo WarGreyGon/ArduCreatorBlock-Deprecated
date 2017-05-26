@@ -38,16 +38,11 @@ li.dropdown{clear:both; }
 .subOpcionMenuBloques:hover{transform: scale(1.2);}
 
 /*Estilos de los bloques*/
-.EstructuraBasica{}
-.Funcion{}
-.Variable{}
+.BloqueArrastrable{background-color: black; color: white; overflow: visible; z-index: 0; position: absolute; border: solid black 5px;}
+.EstructuraBasica{background-color: #da2b40; width: 100px; height: 60px;}
+.Funcion{background-color: #95f709; width: 100px; height: 25px;}
+.Variable{background-color: #0fc9c9; width: 50px; height: 25px;}
 
 
 /*Estilos del area de codigo*/
 .areaCodigoGen{width: 29%; height: 100%; float: left; display: inline-block;}
-
-
-
-/**/
-.BloqueArrastrable{width: 100px; height: 100px; background-color: black; color: white; overflow: visible; z-index: 0; position: absolute; border: solid green 10px; border-right: none}
-/**/
