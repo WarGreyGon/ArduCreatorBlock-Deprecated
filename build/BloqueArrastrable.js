@@ -3,7 +3,7 @@ var BloqueArrastrable = (function () {
     function BloqueArrastrable(categoria, tipo, elementoContenedor) {
         this.bloquesQueContengo = [];
         var div = document.createElement("div");
-        div.className = "BloqueArrastrable";
+        div.className = "BloqueArrastrable " + categoria;
         div.innerHTML = tipo;
         elementoContenedor.appendChild(div);
         this.miDiv = div;
@@ -18,21 +18,13 @@ var BloqueArrastrable = (function () {
             containment: $('.areaBloques'),
             cursor: 'move',
             drag: function (evento, ui) {
-                // TODO: Arrastrar multiples padre con sus hijos
                 var bloqueQueManejo = ui.helper;
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
                 var altoBloqueQueManejo = bloqueQueManejo.height();
                 var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
-                if (numeroBloquesQueContengo > 0) {
-                    //TODO: Englobar estas lineas en un metodo recursivo. Iterar sobre hijos, comprobar que tengan nietos, si se cumple: llamada recursiva
-                    // bloquesHijoDelQueManejo.forEach(b => {
-                    //
-                    //     $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
-                    //     $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
-                    // });
+                if (numeroBloquesQueContengo > 0)
                     _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
-                }
             }
         });
         $(this.miDiv).droppable({
@@ -54,8 +46,7 @@ var BloqueArrastrable = (function () {
                     _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     var altoBloqueQueManejo = bloqueQueManejo.height();
-                    bloqueQueManejo.css('border', '0');
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1)) + "px");
                 }
             },
             drop: function (evento, ui) {
@@ -64,13 +55,12 @@ var BloqueArrastrable = (function () {
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 //TODO: Añadir comprobacion de que no es ya hijo del padre en el que intenta introducirse. (Bug que provoca jesus)
-                if (_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
+                if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     var altoBloqueQueManejo = bloqueQueManejo.height();
                     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
                     bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo * altoBloqueQueManejo + 40);
-                    bloqueQueManejo.css('border', 'solid white 5px');
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1) + 60) + "px");
                     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);

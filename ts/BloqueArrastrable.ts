@@ -12,7 +12,7 @@ class BloqueArrastrable{
     constructor(categoria: string, tipo: string, elementoContenedor: HTMLElement){
 
         let div = document.createElement("div");
-        div.className = "BloqueArrastrable";
+        div.className = "BloqueArrastrable " + categoria;
         div.innerHTML = tipo;
         elementoContenedor.appendChild(div);
 
@@ -35,7 +35,6 @@ class BloqueArrastrable{
             cursor: 'move',
             drag: function(evento: Event, ui: JQuery){
 
-                // TODO: Arrastrar multiples padre con sus hijos
                 let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
@@ -43,16 +42,8 @@ class BloqueArrastrable{
                 let altoBloqueQueManejo = bloqueQueManejo.height();
                 let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
 
-                if (numeroBloquesQueContengo > 0) {
-
-                    //TODO: Englobar estas lineas en un metodo recursivo. Iterar sobre hijos, comprobar que tengan nietos, si se cumple: llamada recursiva
-                    // bloquesHijoDelQueManejo.forEach(b => {
-                    //
-                    //     $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
-                    //     $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
-                    // });
+                if (numeroBloquesQueContengo > 0)
                     _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
-                }
             }
         });
 
@@ -83,8 +74,7 @@ class BloqueArrastrable{
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     let altoBloqueQueManejo = bloqueQueManejo.height();
 
-                    bloqueQueManejo.css('border', '0');
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
+                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1)) + "px");
                 }
             },
             drop: function (evento: Event, ui : JQuery) {
@@ -95,7 +85,7 @@ class BloqueArrastrable{
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
                 //TODO: Añadir comprobacion de que no es ya hijo del padre en el que intenta introducirse. (Bug que provoca jesus)
-                if(_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+                if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     let altoBloqueQueManejo = bloqueQueManejo.height();
@@ -103,7 +93,6 @@ class BloqueArrastrable{
                     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
                     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
                     bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*altoBloqueQueManejo + 40);
-                    bloqueQueManejo.css('border', 'solid white 5px');
                     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
 
