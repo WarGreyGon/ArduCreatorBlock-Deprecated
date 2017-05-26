@@ -25,10 +25,13 @@ var BloqueArrastrable = (function () {
                 var altoBloqueQueManejo = bloqueQueManejo.height();
                 var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
                 if (numeroBloquesQueContengo > 0) {
-                    bloquesHijoDelQueManejo.forEach(function (b) {
-                        $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
-                        $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b) * $(b.miDiv).height() + 40);
-                    });
+                    //TODO: Englobar estas lineas en un metodo recursivo. Iterar sobre hijos, comprobar que tengan nietos, si se cumple: llamada recursiva
+                    // bloquesHijoDelQueManejo.forEach(b => {
+                    //
+                    //     $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
+                    //     $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
+                    // });
+                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
                 }
             }
         });
@@ -48,7 +51,7 @@ var BloqueArrastrable = (function () {
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1) {
-                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo));
+                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     var altoBloqueQueManejo = bloqueQueManejo.height();
                     bloqueQueManejo.css('border', '0');
@@ -60,6 +63,7 @@ var BloqueArrastrable = (function () {
                 var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
+                //TODO: Añadir comprobacion de que no es ya hijo del padre en el que intenta introducirse. (Bug que provoca jesus)
                 if (_thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     var altoBloqueQueManejo = bloqueQueManejo.height();
@@ -74,9 +78,14 @@ var BloqueArrastrable = (function () {
             }
         });
     };
-    // reDimensionarBloqueContenedor(bloqueQueManejo: BloqueArrastrable, bloqueQueSolapo: BloqueArrastrable): void {
-    //
-    // }
+    BloqueArrastrable.prototype.arrastrarHijosJuntoAPadre = function (bloquePadre, bloquesHijoDelQueManejo) {
+        bloquesHijoDelQueManejo.forEach(function (bloqueHijo) {
+            $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
+            $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo) * $(bloqueHijo.miDiv).height() + 40);
+            if (bloqueHijo.bloquesQueContengo.length > 0)
+                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo);
+        });
+    };
     BloqueArrastrable.prototype.esCategoriaAceptable = function (categoriaDelDraggable) {
         var esValido = false;
         switch (this.categoria) {

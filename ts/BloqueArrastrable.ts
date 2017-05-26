@@ -1,6 +1,6 @@
 class BloqueArrastrable{
 
-    //_this: BloqueArrastrable;
+    _this: BloqueArrastrable;
     miDiv: HTMLElement;
     categoria: string;
     tipo: string;
@@ -46,11 +46,12 @@ class BloqueArrastrable{
                 if (numeroBloquesQueContengo > 0) {
 
                     //TODO: Englobar estas lineas en un metodo recursivo. Iterar sobre hijos, comprobar que tengan nietos, si se cumple: llamada recursiva
-                    bloquesHijoDelQueManejo.forEach(b => {
-
-                        $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
-                        $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
-                    });
+                    // bloquesHijoDelQueManejo.forEach(b => {
+                    //
+                    //     $(b.miDiv).css('left', bloqueQueManejo.position().left + 10);
+                    //     $(b.miDiv).css('top', bloqueQueManejo.position().top + bloquesHijoDelQueManejo.indexOf(b)*$(b.miDiv).height() + 40);
+                    // });
+                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
                 }
             }
         });
@@ -113,9 +114,19 @@ class BloqueArrastrable{
     }
 
 
-    // reDimensionarBloqueContenedor(bloqueQueManejo: BloqueArrastrable, bloqueQueSolapo: BloqueArrastrable): void {
-    //
-    // }
+
+    arrastrarHijosJuntoAPadre(bloquePadre: BloqueArrastrable, bloquesHijoDelQueManejo: BloqueArrastrable[]): void {
+
+        bloquesHijoDelQueManejo.forEach(bloqueHijo => {
+
+            $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
+            $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
+
+            if(bloqueHijo.bloquesQueContengo.length > 0)
+                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo)
+        });
+    }
+
 
     esCategoriaAceptable(categoriaDelDraggable: string): boolean {
 
