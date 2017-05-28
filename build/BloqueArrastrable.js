@@ -10,10 +10,9 @@ var BloqueArrastrable = (function () {
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
+        $(this.miDiv).data(this); //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
-        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
-        $(this.miDiv).data(this);
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
@@ -32,9 +31,10 @@ var BloqueArrastrable = (function () {
             tolerance: "touch",
             over: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
-                var bloqueQueManejo = ui.draggable;
+                var bloqueQueManejo = ui.helper;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
+                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                 //TODO: Limitar zona de "tocado" como en blockly
             },
             out: function (evento, ui) {

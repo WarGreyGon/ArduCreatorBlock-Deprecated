@@ -20,15 +20,14 @@ class BloqueArrastrable{
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
+
+        $(this.miDiv).data(this);//De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
     }
 
 
 
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
-
-        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
-        $(this.miDiv).data(this);
 
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
@@ -55,9 +54,11 @@ class BloqueArrastrable{
             over: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
-                let bloqueQueManejo = ui.draggable;
+                let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
+                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
 
                 //TODO: Limitar zona de "tocado" como en blockly
             },
@@ -125,7 +126,7 @@ class BloqueArrastrable{
 
             case 'EstructuraBasica':
 
-                ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
+                ['EstructuraBasica', 'Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
             case 'Funcion':
 
