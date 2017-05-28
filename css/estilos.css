@@ -25,17 +25,17 @@
 .opcionMenuBloques{width: 100%; padding: 5%; text-decoration: none; font-size: 1.5em; color: white; float: left; clear: both; transition: 0.5s; overflow: hidden;
     cursor: pointer; border: none;}
 .opcionMenuBloques:hover{transform: scale(1.2);}
-.subOpcionMenuBloques{width: 100%; height: 0; margin-bottom: 1%; float: left; clear: both; transition: 0.5s; cursor: pointer; overflow: hidden;}
+.subOpcionMenuBloques{width: 100%; height: 0; float: left; clear: both; transition: 0.5s; cursor: pointer; overflow: hidden;}
 
 
 
 /*Estilos de los bloques*/
-.BloqueEnMenu{}
-.BloqueArrastrable{color: white; z-index: 0; position: absolute; border: solid grey 5px;}
-.EstructuraBasica{background-color: #da2b40; width: 100px; height: 60px;}
-.Funcion{background-color: #95f709; width: 100px; height: 25px;}
-.Objeto{background-color: #feba34; width: 80px; height: 80px;}
-.Variable{background-color: #0fc9c9; width: 50px; height: 25px;}
+.BloqueEnMenu{transform: scale(0.7);}
+.BloqueArrastrable{ color: white; z-index: 0; position: absolute; border: solid grey 5px;}
+.EstructuraBasica{background-color: #da2b40; width: 150px; height: 90px;}
+.Funcion{background-color: #95f709; width: 150px; height: 50px;}
+.Objeto{background-color: #feba34; width: 120px; height: 120px;}
+.Variable{background-color: #0fc9c9; width: 80px; height: 40px;}
 
 
 

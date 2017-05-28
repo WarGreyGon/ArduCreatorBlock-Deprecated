@@ -39,8 +39,8 @@
 
                         <div>
                             <div id="Funcion" class="opcionMenuBloques text-center">Funciones</div>
-                            <div class="subOpcionMenuBloques text-center"><div id="PrintLn" class="Funcion BloqueEnMenu">If</div></div>
-                            <div class="subOpcionMenuBloques text-center"><div id="digitalWrite" class="Funcion BloqueEnMenu">If-Else</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="PrintLn" class="Funcion BloqueEnMenu">PrintLn</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="digitalWrite" class="Funcion BloqueEnMenu">digitalWrite</div></div>
                         </div>
 
                         <div>
@@ -74,16 +74,17 @@
 
                     $(this).parent().parent().find('.subOpcionMenuBloques').each(function (index, value) {
 
-                        $(this).css('height', '0');
+                        $(this).css({'height': 0, 'margin-bottom': 0});
                     });
 
                     $(this).parent().children('.subOpcionMenuBloques').each(function (index, value) {
 
-                        var el = $(this),
-                            curHeight = el.height(),
-                            autoHeight = el.css('height', 'auto').height();
-                            el.height(curHeight).animate({height: autoHeight}, 300);
+                        var bloqueHijo = $(this),
+                            curHeight = bloqueHijo.height(),
+                            autoHeight = bloqueHijo.css('height', 'auto').height();
+                            bloqueHijo.height(curHeight).animate({height: autoHeight}, 300);
                         });
+                        $(this).parent().css('margin-bottom', '2%');
                 });
 
                 $(".subOpcionMenuBloques").click(function(e) { e.stopPropagation(); });
