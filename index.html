@@ -30,17 +30,23 @@
 
                     <div class="menuBloques">
                         <div>
-                            <div>
-                                <div id="EstructuraBasica" class="opcionMenuBloques text-center">Estructuras<br>Básicas</div></div>
-                                <div class="subOpcionMenuBloques text-center"><div id="If" class="EstructuraBasica BloqueEnMenu">If</div></div>
-                                <div class="subOpcionMenuBloques text-center"><div id="If-Else" class="EstructuraBasica BloqueEnMenu">If-Else</div></div>
-                            </div>
+                            <div id="EstructuraBasica" class="opcionMenuBloques text-center">Estructuras<br>Básicas</div>
+                            <div class="subOpcionMenuBloques text-center"><div id="If" class="EstructuraBasica BloqueEnMenu">If</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="If-Else" class="EstructuraBasica BloqueEnMenu">If-Else</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="While" class="EstructuraBasica BloqueEnMenu">While</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="For" class="EstructuraBasica BloqueEnMenu">For</div></div>
+                        </div>
 
-                            <div>
-                                <div id="EstructuraBasica" class="opcionMenuBloques text-center">Funciones</div></div>
-                                <div class="subOpcionMenuBloques text-center"><div id="PrintLn" class="Funcion BloqueEnMenu">If</div></div>
-                                <div class="subOpcionMenuBloques text-center"><div id="digitalWrite" class="Funcion BloqueEnMenu">If-Else</div></div>
-                            </div>
+                        <div>
+                            <div id="Funcion" class="opcionMenuBloques text-center">Funciones</div>
+                            <div class="subOpcionMenuBloques text-center"><div id="PrintLn" class="Funcion BloqueEnMenu">If</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="digitalWrite" class="Funcion BloqueEnMenu">If-Else</div></div>
+                        </div>
+
+                        <div>
+                            <div id="Objeto" class="opcionMenuBloques text-center">Objetos</div>
+                            <div class="subOpcionMenuBloques text-center"><div id="Motor DC" class="Objeto BloqueEnMenu">Motor DC</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="Stepper" class="Objeto BloqueEnMenu">Stepper</div></div>
                         </div>
                     </div>
 
@@ -65,12 +71,19 @@
                 $(".opcionMenuBloques").click(function(e) {
 
                     e.stopPropagation();
-                    $(this).parent().parent().parent().find('.subOpcionMenuBloques').each(function (index, value) {
+
+                    $(this).parent().parent().find('.subOpcionMenuBloques').each(function (index, value) {
+
                         $(this).css('height', '0');
                     });
-                    $(this).parent().parent().children('.subOpcionMenuBloques').each(function (index, value) {
-                        $(this).css('height', 'auto');
-                    });
+
+                    $(this).parent().children('.subOpcionMenuBloques').each(function (index, value) {
+
+                        var el = $(this),
+                            curHeight = el.height(),
+                            autoHeight = el.css('height', 'auto').height();
+                            el.height(curHeight).animate({height: autoHeight}, 300);
+                        });
                 });
 
                 $(".subOpcionMenuBloques").click(function(e) { e.stopPropagation(); });
