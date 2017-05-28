@@ -28,30 +28,21 @@
                 <div href="javascript:void(0)" class="areaBloques">
                     <span class="iconoMenuBloques">&#9776;</span>
 
-                    <nav class="menuBloques text-center" role="navigation">
-                        <div class="container-fluid">
-                            <div class="collapse navbar-collapse">
-                                <ul class="nav navbar-nav">
-                                    <li class="dropdown">
-                                        <div href="#" class="opcionMenuBloques" data-toggle="dropdown">Estructuras</div>
-                                        <ul class="dropdown-menu" id="Estructuras" role="menu">
-                                            <li class="subOpcionMenuBloques If"></li>
-                                            <li class="subOpcionMenuBloques If-Else"></li>
-                                            <li class="subOpcionMenuBloques If-ElseIf"></li>
-                                        </ul>
-                                    </li>
+                    <div class="menuBloques">
+                        <div>
+                            <div>
+                                <div id="EstructuraBasica" class="opcionMenuBloques text-center">Estructuras<br>Básicas</div></div>
+                                <div class="subOpcionMenuBloques text-center"><div id="If" class="EstructuraBasica BloqueEnMenu">If</div></div>
+                                <div class="subOpcionMenuBloques text-center"><div id="If-Else" class="EstructuraBasica BloqueEnMenu">If-Else</div></div>
+                            </div>
 
-                                    <li class="dropdown">
-                                        <div href="#" class="opcionMenuBloques" data-toggle="dropdown">Funciones</div>
-                                        <ul class="dropdown-menu forAnimate" role="menu">
-                                            <li><a class="subOpcionMenuBloques" href="#">Sumar</a></li>
-                                            <li><a class="subOpcionMenuBloques" href="#">Restar</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
+                            <div>
+                                <div id="EstructuraBasica" class="opcionMenuBloques text-center">Funciones</div></div>
+                                <div class="subOpcionMenuBloques text-center"><div id="PrintLn" class="Funcion BloqueEnMenu">If</div></div>
+                                <div class="subOpcionMenuBloques text-center"><div id="digitalWrite" class="Funcion BloqueEnMenu">If-Else</div></div>
                             </div>
                         </div>
-                    </nav>
+                    </div>
 
                     <!-- <img src="imgs/bin.png" class="papelera" onmouseover="hover(this);" onmouseout="unhover(this);"> -->
                 </div>
@@ -67,11 +58,21 @@
             $(document).ready(function(){
 
                 $('.areaBloques').click(function() { $('.menuBloques').css('width', '0'); });
-                $(".iconoMenuBloques").click(function(e) { e.stopPropagation(); $('.menuBloques').css('width', 'auto'); });
+                $(".iconoMenuBloques").click(function(e) { e.stopPropagation(); $('.menuBloques').css('width', '20%'); });
 
 
                 $(".menuBloques").click(function(e) { e.stopPropagation(); });
-                $(".opcionMenuBloques").click(function(e) { e.stopPropagation(); $(e.target).dropdown() });
+                $(".opcionMenuBloques").click(function(e) {
+
+                    e.stopPropagation();
+                    $(this).parent().parent().parent().find('.subOpcionMenuBloques').each(function (index, value) {
+                        $(this).css('height', '0');
+                    });
+                    $(this).parent().parent().children('.subOpcionMenuBloques').each(function (index, value) {
+                        $(this).css('height', 'auto');
+                    });
+                });
+
                 $(".subOpcionMenuBloques").click(function(e) { e.stopPropagation(); });
             });
 
