@@ -41,8 +41,9 @@ class BloqueArrastrable{
                 let altoBloqueQueManejo = bloqueQueManejo.height();
                 let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
 
+                bloqueQueManejo.css('z-index', 0);
                 if (numeroBloquesQueContengo > 0)
-                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
+                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
             }
         });
 
@@ -105,15 +106,21 @@ class BloqueArrastrable{
 
 
 
-    arrastrarHijosJuntoAPadre(bloquePadre: BloqueArrastrable, bloquesHijoDelQueManejo: BloqueArrastrable[]): void {
+    arrastrarHijosJuntoAPadre(bloquePadre: BloqueArrastrable, bloquesHijoDelQueManejo: BloqueArrastrable[], zIndex: number): void {
 
         bloquesHijoDelQueManejo.forEach(bloqueHijo => {
 
-            $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
-            $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
+            // $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
+            // $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
+            zIndex++;
+            $(bloqueHijo.miDiv).css({
+                'left': $(bloquePadre.miDiv).position().left + 10,
+                'top': $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40,
+                'z-index': zIndex
+            })
 
             if(bloqueHijo.bloquesQueContengo.length > 0)
-                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo)
+                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
         });
     }
 

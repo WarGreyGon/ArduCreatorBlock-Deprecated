@@ -22,8 +22,9 @@ var BloqueArrastrable = (function () {
                 var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
                 var altoBloqueQueManejo = bloqueQueManejo.height();
                 var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
+                bloqueQueManejo.css('z-index', 0);
                 if (numeroBloquesQueContengo > 0)
-                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
+                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
             }
         });
         $(this.miDiv).droppable({
@@ -68,12 +69,18 @@ var BloqueArrastrable = (function () {
             }
         });
     };
-    BloqueArrastrable.prototype.arrastrarHijosJuntoAPadre = function (bloquePadre, bloquesHijoDelQueManejo) {
+    BloqueArrastrable.prototype.arrastrarHijosJuntoAPadre = function (bloquePadre, bloquesHijoDelQueManejo, zIndex) {
         bloquesHijoDelQueManejo.forEach(function (bloqueHijo) {
-            $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
-            $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo) * $(bloqueHijo.miDiv).height() + 40);
+            // $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
+            // $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
+            zIndex++;
+            $(bloqueHijo.miDiv).css({
+                'left': $(bloquePadre.miDiv).position().left + 10,
+                'top': $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo) * $(bloqueHijo.miDiv).height() + 40,
+                'z-index': zIndex
+            });
             if (bloqueHijo.bloquesQueContengo.length > 0)
-                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo);
+                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
         });
     };
     BloqueArrastrable.prototype.esCategoriaAceptable = function (categoriaDelDraggable) {
