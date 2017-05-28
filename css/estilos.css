@@ -12,10 +12,10 @@
 
 /*Estilos de la parte de bloques*/
 .areaBloques{width: 70%; height: 100%; border-right: solid #3fbfe8 10px; background-color: #3f4546; float: left; display: inline-block;
-    position: relative; background-image: url('../imgs/bin.png'); background-repeat: no-repeat; background-attachment: fixed; background-position: 65% 87%;
+    position: relative; background-repeat: no-repeat; background-attachment: fixed; background-position: 65% 87%;
     background-size: 8%}
-.areaBloques:hover{background-image: url('../imgs/bin-abierta.png');}
-/*.papelera{transform: scale(0.25); display: block; top: 0; left: 0; }*/
+.papelera{width: auto; transform: scale(0.6); height: auto; position: absolute; right: 0; bottom: 0;}
+.papelera:hover{src: url('../imgs/bin-abierta.png');}
 .iconoMenuBloques{position: absolute; top: 0; left: 0; margin-left: 1%; font-size: 4.5em; cursor: pointer;}
 .iconoMenuBloques:hover{color: white;}
 
