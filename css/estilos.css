@@ -31,7 +31,7 @@
 
 /*Estilos de los bloques*/
 .BloqueEnMenu{transform: scale(0.7);}
-.BloqueArrastrable{ color: white; z-index: 0; position: absolute; border: solid grey 5px;}
+.BloqueArrastrable{ color: white; z-index: 0; position: absolute;}
 .EstructuraBasica{background-color: #da2b40; width: 150px; height: 90px;}
 .Funcion{background-color: #95f709; width: 150px; height: 50px;}
 .Objeto{background-color: #feba34; width: 120px; height: 120px;}

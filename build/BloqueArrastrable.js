@@ -32,11 +32,17 @@ var BloqueArrastrable = (function () {
             tolerance: "touch",
             over: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
-                var bloqueQueManejo = ui.helper;
+                var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
+                // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
                 //TODO: Limitar zona de "tocado" como en blockly
+                var offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
+                if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
+                    bloqueQueManejo.css({
+                        'border-top': 'solid grey 5px'
+                    });
+                }
             },
             out: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
@@ -49,6 +55,7 @@ var BloqueArrastrable = (function () {
                     var altoBloqueQueManejo = bloqueQueManejo.height();
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height() * (numeroBloquesQueContengo + 1)) + "px");
                 }
+                bloqueQueManejo.css({ 'border-top': 0 });
             },
             drop: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
@@ -71,8 +78,6 @@ var BloqueArrastrable = (function () {
     };
     BloqueArrastrable.prototype.arrastrarHijosJuntoAPadre = function (bloquePadre, bloquesHijoDelQueManejo, zIndex) {
         bloquesHijoDelQueManejo.forEach(function (bloqueHijo) {
-            // $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
-            // $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
             zIndex++;
             $(bloqueHijo.miDiv).css({
                 'left': $(bloquePadre.miDiv).position().left + 10,
@@ -87,10 +92,11 @@ var BloqueArrastrable = (function () {
         var esValido = false;
         switch (this.categoria) {
             case 'EstructuraBasica':
-                ['EstructuraBasica', 'Funcion', 'Variable'].forEach(function (c) { if (c == categoriaDelDraggable)
+                ['EstructuraBasica', 'Funcion', 'Variable', 'Objeto'].forEach(function (c) { if (c == categoriaDelDraggable)
                     esValido = true; });
                 break;
             case 'Funcion':
+            case 'Objeto':
                 ['Funcion', 'Variable'].forEach(function (c) { if (c == categoriaDelDraggable)
                     esValido = true; });
                 break;

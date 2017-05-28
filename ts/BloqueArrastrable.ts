@@ -30,8 +30,10 @@ class BloqueArrastrable{
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
         $(this.miDiv).draggable({
+
             containment: $('.areaBloques'),
             cursor: 'move',
+
             drag: function(evento: Event, ui: JQuery){
 
                 let bloqueQueManejo = ui.helper;
@@ -52,17 +54,26 @@ class BloqueArrastrable{
 
             accept: '.BloqueArrastrable',
             tolerance: "touch",
+
             over: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
-                let bloqueQueManejo = ui.helper;
+                let bloqueQueManejo = ui.draggable;
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
+                // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
 
                 //TODO: Limitar zona de "tocado" como en blockly
+                let offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
+                if(offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+
+                    bloqueQueManejo.css({
+                        'border-top': 'solid grey 5px'
+                    })
+                }
             },
+
             out: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
@@ -78,7 +89,10 @@ class BloqueArrastrable{
 
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1)) + "px");
                 }
+
+                bloqueQueManejo.css({ 'border-top': 0 })
             },
+
             drop: function (evento: Event, ui : JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
@@ -110,8 +124,6 @@ class BloqueArrastrable{
 
         bloquesHijoDelQueManejo.forEach(bloqueHijo => {
 
-            // $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
-            // $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
             zIndex++;
             $(bloqueHijo.miDiv).css({
                 'left': $(bloquePadre.miDiv).position().left + 10,
@@ -133,9 +145,10 @@ class BloqueArrastrable{
 
             case 'EstructuraBasica':
 
-                ['EstructuraBasica', 'Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
+                ['EstructuraBasica', 'Funcion', 'Variable', 'Objeto'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
             case 'Funcion':
+            case 'Objeto':
 
                 ['Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
