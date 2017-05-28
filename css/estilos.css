@@ -12,36 +12,32 @@
 
 /*Estilos de la parte de bloques*/
 .areaBloques{width: 70%; height: 100%; border-right: solid #3fbfe8 10px; background-color: #3f4546; float: left; display: inline-block;
-    position: relative; background-image: url('../imgs/bin.png'); background-repeat: no-repeat; background-attachment: fixed; background-position: 65% 87%;
+    position: relative; background-repeat: no-repeat; background-attachment: fixed; background-position: 65% 87%;
     background-size: 8%}
-.areaBloques:hover{background-image: url('../imgs/bin-abierta.png');}
-/*.papelera{transform: scale(0.25); display: block; top: 0; left: 0; }*/
+.papelera{width: auto; transform: scale(0.6); height: auto; position: absolute; right: 0; bottom: 0;}
+.papeleraAbierta{src: url('../imgs/bin-abierta.png');}
+/*.papelera:hover{src: url('../imgs/bin-abierta.png');}*/
 .iconoMenuBloques{position: absolute; top: 0; left: 0; margin-left: 1%; font-size: 4.5em; cursor: pointer;}
 .iconoMenuBloques:hover{color: white;}
 
 
 /*Estilos de los menus de bloques*/
-nav.menuBloques{ -webkit-transition: margin 200ms ease-out; -moz-transition: margin 200ms ease-out; -o-transition: margin 200ms ease-out;
-    transition: margin 200ms ease-out; }
-.navbar-nav .dropdown-menu { position: static; background-color: transparent; border: 0; -webkit-box-shadow: none;
-    box-shadow: none; transition: 0.5s;}
-.container-fluid, .navbar-collapse {margin: 0; padding: 0; }
-li.dropdown{clear:both; }
-
-.menuBloques{height: 95%; width: 0; position: absolute; z-index: 1; top: 0; left: 0; background-color: #111; overflow-x: hidden;
-    transition: 0.5s; border: none; border-radius: 0 0 50px 0;}
-.opcionMenuBloques{width: 100%; padding: 5%; text-decoration: none; font-size: 2em; color: white; display: block; transition: 0.5s;
+.menuBloques{height: 100%; width: 0; position: absolute; z-index: 1; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.5s;}
+.opcionMenuBloques{width: 100%; padding: 5%; text-decoration: none; font-size: 1.5em; color: white; float: left; clear: both; transition: 0.5s; overflow: hidden;
     cursor: pointer; border: none;}
-.opcionMenuBloques:hover{border-bottom: solid #3fbfe8 5px; border-right: solid #3fbfe8 5px; border-radius: 0 50% 0 0;}
-.subOpcionMenuBloques{width: 100%; padding: 0; text-decoration: none; font-size: 1em; display: block;
-    transition: 0.5s; cursor: pointer;}
-.subOpcionMenuBloques:hover{transform: scale(1.2);}
+.opcionMenuBloques:hover{transform: scale(1.2);}
+.subOpcionMenuBloques{width: 100%; height: 0; float: left; clear: both; transition: 0.5s; cursor: pointer; overflow: hidden;}
+
+
 
 /*Estilos de los bloques*/
-.BloqueArrastrable{background-color: black; color: white; overflow: visible; z-index: 0; position: absolute; border: solid black 5px;}
-.EstructuraBasica{background-color: #da2b40; width: 100px; height: 60px;}
-.Funcion{background-color: #95f709; width: 100px; height: 25px;}
-.Variable{background-color: #0fc9c9; width: 50px; height: 25px;}
+.BloqueEnMenu{transform: scale(0.7);}
+.BloqueArrastrable{ color: white; z-index: 0; position: absolute;}
+.EstructuraBasica{background-color: #da2b40; width: 150px; height: 90px;}
+.Funcion{background-color: #95f709; width: 150px; height: 50px;}
+.Objeto{background-color: #feba34; width: 120px; height: 120px;}
+.Variable{background-color: #0fc9c9; width: 80px; height: 40px;}
+
 
 
 /*Estilos del area de codigo*/

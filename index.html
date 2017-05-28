@@ -28,35 +28,37 @@
                 <div href="javascript:void(0)" class="areaBloques">
                     <span class="iconoMenuBloques">&#9776;</span>
 
-                    <nav class="menuBloques text-center" role="navigation">
-                        <div class="container-fluid">
-                            <div class="collapse navbar-collapse">
-                                <ul class="nav navbar-nav">
-                                    <li class="dropdown">
-                                        <div href="#" class="opcionMenuBloques" data-toggle="dropdown">Estructuras</div>
-                                        <ul class="dropdown-menu" id="Estructuras" role="menu">
-                                            <li class="subOpcionMenuBloques If"></li>
-                                            <li class="subOpcionMenuBloques If-Else"></li>
-                                            <li class="subOpcionMenuBloques If-ElseIf"></li>
-                                        </ul>
-                                    </li>
-
-                                    <li class="dropdown">
-                                        <div href="#" class="opcionMenuBloques" data-toggle="dropdown">Funciones</div>
-                                        <ul class="dropdown-menu forAnimate" role="menu">
-                                            <li><a class="subOpcionMenuBloques" href="#">Sumar</a></li>
-                                            <li><a class="subOpcionMenuBloques" href="#">Restar</a></li>
-                                        </ul>
-                                    </li>
-                                </ul>
-                            </div>
+                    <div class="menuBloques">
+                        <div>
+                            <div id="EstructuraBasica" class="opcionMenuBloques text-center">Estructuras<br>Básicas</div>
+                            <div class="subOpcionMenuBloques text-center"><div id="If" class="EstructuraBasica BloqueEnMenu">If</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="IfElse" class="EstructuraBasica BloqueEnMenu">IfElse</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="While" class="EstructuraBasica BloqueEnMenu">While</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="DoWhile" class="EstructuraBasica BloqueEnMenu">DoWhile</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="For" class="EstructuraBasica BloqueEnMenu">For</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="ForEach" class="EstructuraBasica BloqueEnMenu">ForEach</div></div>
                         </div>
-                    </nav>
 
-                    <!-- <img src="imgs/bin.png" class="papelera" onmouseover="hover(this);" onmouseout="unhover(this);"> -->
+                        <div>
+                            <div id="Funcion" class="opcionMenuBloques text-center">Funciones</div>
+                            <div class="subOpcionMenuBloques text-center"><div id="digitalRead" class="Funcion BloqueEnMenu">digitalRead</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="digitalWrite" class="Funcion BloqueEnMenu">digitalWrite</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="analogRead" class="Funcion BloqueEnMenu">analogRead</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="analogWrite" class="Funcion BloqueEnMenu">analogWrite</div></div>
+                        </div>
+
+                        <div>
+                            <div id="Objeto" class="opcionMenuBloques text-center">Objetos</div>
+                            <div class="subOpcionMenuBloques text-center"><div id="DcMotor" class="Objeto BloqueEnMenu">DcMotor</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="Stepper" class="Objeto BloqueEnMenu">Stepper</div></div>
+                            <div class="subOpcionMenuBloques text-center"><div id="Servo" class="Objeto BloqueEnMenu">Servo</div></div>
+                        </div>
+                    </div>
+
+                    <img src="imgs/bin.png" class="papelera" onmouseover="hover(this);" onmouseout="unhover(this);">
                 </div>
                 <div class="areaCodigoGen text-center">
-                    <h3>Mi Programa</h3>
+                    <h3>Código</h3>
                 </div>
             </div>
         </div>
@@ -67,17 +69,32 @@
             $(document).ready(function(){
 
                 $('.areaBloques').click(function() { $('.menuBloques').css('width', '0'); });
-                $(".iconoMenuBloques").click(function(e) { e.stopPropagation(); $('.menuBloques').css('width', 'auto'); });
+                $(".iconoMenuBloques").click(function(e) { e.stopPropagation(); $('.menuBloques').css('width', '20%'); });
 
 
                 $(".menuBloques").click(function(e) { e.stopPropagation(); });
-                $(".opcionMenuBloques").click(function(e) { e.stopPropagation(); $(e.target).dropdown() });
+
+                $(".opcionMenuBloques").click(function(e) {
+
+                    e.stopPropagation();
+
+                    $(this).parent().parent().find('.subOpcionMenuBloques').each(function (index, value) {
+
+                        $(this).css({'height': 0, 'margin-bottom': 0});
+                    });
+
+                    $(this).parent().children('.subOpcionMenuBloques').each(function (index, value) {
+
+                        var bloqueHijo = $(this),
+                            curHeight = bloqueHijo.height(),
+                            autoHeight = bloqueHijo.css('height', 'auto').height();
+                            bloqueHijo.height(curHeight).animate({height: autoHeight}, 300);
+                        });
+                        $(this).parent().css('margin-bottom', '2%');
+                });
+
                 $(".subOpcionMenuBloques").click(function(e) { e.stopPropagation(); });
             });
-
-            // Evento de pasar sobre la papelera
-            function hover(element) {element.setAttribute('src', 'imgs/bin-abierta.png');}
-            function unhover(element) {element.setAttribute('src', 'imgs/bin.png');}
         </script>
 
         <script src="build/BloqueArrastrable.js" charset="utf-8"></script>

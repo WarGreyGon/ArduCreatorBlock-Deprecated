@@ -20,6 +20,8 @@ class BloqueArrastrable{
         this.categoria = categoria;
         this.tipo = tipo;
         this.arrastrarYSoltar(elementoContenedor);
+
+        $(this.miDiv).data(this);//De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
     }
 
 
@@ -27,12 +29,14 @@ class BloqueArrastrable{
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
-        //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
-        $(this.miDiv).data(this);
+        let bloqueValido: boolean = false;
+        let zonaDeAcople: number = 0;
 
         $(this.miDiv).draggable({
+
             containment: $('.areaBloques'),
             cursor: 'move',
+
             drag: function(evento: Event, ui: JQuery){
 
                 let bloqueQueManejo = ui.helper;
@@ -42,8 +46,9 @@ class BloqueArrastrable{
                 let altoBloqueQueManejo = bloqueQueManejo.height();
                 let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
 
+                bloqueQueManejo.css('z-index', 0);
                 if (numeroBloquesQueContengo > 0)
-                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo);
+                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
             }
         });
 
@@ -52,6 +57,7 @@ class BloqueArrastrable{
 
             accept: '.BloqueArrastrable',
             tolerance: "touch",
+
             over: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
@@ -59,8 +65,18 @@ class BloqueArrastrable{
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
+                // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
+
                 //TODO: Limitar zona de "tocado" como en blockly
+                let offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
+                if(offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+
+                    bloqueQueManejo.css({ 'border-top': 'solid green 5px' });
+                } else if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+
+                }
             },
+
             out: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
@@ -76,7 +92,10 @@ class BloqueArrastrable{
 
                     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1)) + "px");
                 }
+
+                bloqueQueManejo.css({ 'border-top': 0 })
             },
+
             drop: function (evento: Event, ui : JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
@@ -104,15 +123,19 @@ class BloqueArrastrable{
 
 
 
-    arrastrarHijosJuntoAPadre(bloquePadre: BloqueArrastrable, bloquesHijoDelQueManejo: BloqueArrastrable[]): void {
+    arrastrarHijosJuntoAPadre(bloquePadre: BloqueArrastrable, bloquesHijoDelQueManejo: BloqueArrastrable[], zIndex: number): void {
 
         bloquesHijoDelQueManejo.forEach(bloqueHijo => {
 
-            $(bloqueHijo.miDiv).css('left', $(bloquePadre.miDiv).position().left + 10);
-            $(bloqueHijo.miDiv).css('top', $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40);
+            zIndex++;
+            $(bloqueHijo.miDiv).css({
+                'left': $(bloquePadre.miDiv).position().left + 10,
+                'top': $(bloquePadre.miDiv).position().top + bloquesHijoDelQueManejo.indexOf(bloqueHijo)*$(bloqueHijo.miDiv).height() + 40,
+                'z-index': zIndex
+            })
 
             if(bloqueHijo.bloquesQueContengo.length > 0)
-                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo)
+                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
         });
     }
 
@@ -125,9 +148,10 @@ class BloqueArrastrable{
 
             case 'EstructuraBasica':
 
-                ['EstructuraBasica' , 'Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
+                ['EstructuraBasica', 'Funcion', 'Variable', 'Objeto'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
             case 'Funcion':
+            case 'Objeto':
 
                 ['Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
                 break;
