@@ -13,6 +13,8 @@ var BloqueArrastrable = (function () {
         $(this.miDiv).data(this); //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
+        var bloqueValido = false;
+        var zonaDeAcople = 0;
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
@@ -39,9 +41,9 @@ var BloqueArrastrable = (function () {
                 //TODO: Limitar zona de "tocado" como en blockly
                 var offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
                 if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
-                    bloqueQueManejo.css({
-                        'border-top': 'solid grey 5px'
-                    });
+                    bloqueQueManejo.css({ 'border-top': 'solid green 5px' });
+                }
+                else if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
                 }
             },
             out: function (evento, ui) {

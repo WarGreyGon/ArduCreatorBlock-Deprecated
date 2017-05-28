@@ -29,6 +29,9 @@ class BloqueArrastrable{
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
+        let bloqueValido: boolean = false;
+        let zonaDeAcople: number = 0;
+
         $(this.miDiv).draggable({
 
             containment: $('.areaBloques'),
@@ -68,9 +71,9 @@ class BloqueArrastrable{
                 let offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
                 if(offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
-                    bloqueQueManejo.css({
-                        'border-top': 'solid grey 5px'
-                    })
+                    bloqueQueManejo.css({ 'border-top': 'solid green 5px' });
+                } else if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+
                 }
             },
 

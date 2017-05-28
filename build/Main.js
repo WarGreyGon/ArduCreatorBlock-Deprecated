@@ -31,3 +31,36 @@ $(".areaBloques").droppable({
         }
     }
 });
+$('.papelera').droppable({
+    accept: '.BloqueArrastrable',
+    tolerance: 'touch',
+    over: function (evento, ui) {
+        hover($(this));
+    },
+    out: function (evento, ui) {
+        unhover($(this));
+    },
+    drop: function (evento, ui) {
+        var bloqueQueManejo = ui.helper;
+        var _thisBloqueQueManejo = bloqueQueManejo.data();
+        eliminarHijos(_thisBloqueQueManejo.bloquesQueContengo);
+        bloqueQueManejo.empty();
+        bloqueQueManejo.remove();
+        unhover($(this));
+    }
+});
+function eliminarHijos(hijos) {
+    hijos.forEach(function (hijo) {
+        if (hijo.bloquesQueContengo.length > 0) {
+            eliminarHijos(hijo.bloquesQueContengo);
+        }
+        else {
+            $(hijo.miDiv).empty();
+            $(hijo.miDiv).remove();
+        }
+        ;
+    });
+}
+// Evento de pasar sobre la papelera
+function hover(element) { $(element).attr('src', 'imgs/bin-abierta.png'); }
+function unhover(element) { $(element).attr('src', 'imgs/bin.png'); }

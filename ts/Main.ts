@@ -43,3 +43,48 @@ $(".areaBloques").droppable({
         }
     }
 });
+
+
+$('.papelera').droppable({
+
+    accept: '.BloqueArrastrable',
+    tolerance: 'touch',
+
+    over: function(evento: Event, ui: JQuery){
+        hover($(this))
+    },
+
+    out: function(evento: Event, ui: JQuery){
+        unhover($(this))
+    },
+
+    drop: function(evento: Event, ui: JQuery) {
+
+        let bloqueQueManejo = ui.helper;
+        let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
+        eliminarHijos(_thisBloqueQueManejo.bloquesQueContengo);
+        bloqueQueManejo.empty();
+        bloqueQueManejo.remove();
+
+        unhover($(this))
+    }
+});
+
+
+function eliminarHijos(hijos: BloqueArrastrable[]){
+
+    hijos.forEach(hijo => {
+        if (hijo.bloquesQueContengo.length > 0){
+            eliminarHijos(hijo.bloquesQueContengo);
+        } else {
+            $(hijo.miDiv).empty();
+            $(hijo.miDiv).remove();
+        };
+    });
+}
+
+
+// Evento de pasar sobre la papelera
+function hover(element: JQuery) {$(element).attr('src', 'imgs/bin-abierta.png');}
+function unhover(element: JQuery) {$(element).attr('src', 'imgs/bin.png');}
