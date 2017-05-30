@@ -39,6 +39,7 @@ class BloqueArrastrable{
 
             drag: function(evento: Event, ui: JQuery){
 
+                $('.menuBloques').css('width', '0');
                 let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
@@ -62,10 +63,12 @@ class BloqueArrastrable{
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
+                let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
                 // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
+                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
 
                 //TODO: Limitar zona de "tocado" como en blockly
                 let offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
@@ -103,8 +106,8 @@ class BloqueArrastrable{
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-                if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 &&
-                    _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+                if(_thisBloqueQueSolapo.bloquesQueContengo !== undefined && _thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 
+                && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
 
                     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     let altoBloqueQueManejo = bloqueQueManejo.height();
@@ -135,7 +138,7 @@ class BloqueArrastrable{
             })
 
             if(bloqueHijo.bloquesQueContengo.length > 0)
-                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
+                bloqueHijo.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
         });
     }
 

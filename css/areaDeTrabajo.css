@@ -16,7 +16,6 @@
     background-size: 8%}
 .papelera{width: auto; transform: scale(0.6); height: auto; position: absolute; right: 0; bottom: 0;}
 .papeleraAbierta{src: url('../imgs/bin-abierta.png');}
-/*.papelera:hover{src: url('../imgs/bin-abierta.png');}*/
 .iconoMenuBloques{position: absolute; top: 0; left: 0; margin-left: 1%; font-size: 4.5em; cursor: pointer;}
 .iconoMenuBloques:hover{color: white;}
 
@@ -33,7 +32,7 @@
 /*Estilos de los bloques*/
 .BloqueEnMenu{transform: scale(0.7);}
 .BloqueArrastrable{ color: white; z-index: 0; position: absolute;}
-.EstructuraBasica{background-color: #da2b40; width: 150px; height: 90px;}
+.EstructuraBasica{background-color: #da2b40; width: 150px; height: 160px;}
 .Funcion{background-color: #95f709; width: 150px; height: 50px;}
 .Objeto{background-color: #feba34; width: 120px; height: 120px;}
 .Variable{background-color: #0fc9c9; width: 80px; height: 40px;}
