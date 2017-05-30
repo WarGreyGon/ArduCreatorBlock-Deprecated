@@ -64,8 +64,8 @@ var BloqueArrastrable = (function () {
                 var bloqueQueManejo = ui.draggable;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
-                if (_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 &&
-                    _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
+                if (_thisBloqueQueSolapo.bloquesQueContengo !== undefined && _thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1
+                    && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
                     var numeroBloquesQueContengo = _thisBloqueQueSolapo.bloquesQueContengo.length;
                     var altoBloqueQueManejo = bloqueQueManejo.height();
                     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
@@ -87,7 +87,7 @@ var BloqueArrastrable = (function () {
                 'z-index': zIndex
             });
             if (bloqueHijo.bloquesQueContengo.length > 0)
-                bloquePadre.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
+                bloqueHijo.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
         });
     };
     BloqueArrastrable.prototype.esCategoriaAceptable = function (categoriaDelDraggable) {
