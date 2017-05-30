@@ -39,6 +39,7 @@ class BloqueArrastrable{
 
             drag: function(evento: Event, ui: JQuery){
 
+                $('.menuBloques').css('width', '0');
                 let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
@@ -62,10 +63,12 @@ class BloqueArrastrable{
 
                 let bloqueQueSolapo = $(evento.target);
                 let bloqueQueManejo = ui.draggable;
+                let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
                 // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
+                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
 
                 //TODO: Limitar zona de "tocado" como en blockly
                 let offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;

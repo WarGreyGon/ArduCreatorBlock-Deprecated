@@ -19,6 +19,7 @@ var BloqueArrastrable = (function () {
             containment: $('.areaBloques'),
             cursor: 'move',
             drag: function (evento, ui) {
+                $('.menuBloques').css('width', '0');
                 var bloqueQueManejo = ui.helper;
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
@@ -35,9 +36,11 @@ var BloqueArrastrable = (function () {
             over: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
                 var bloqueQueManejo = ui.draggable;
+                var bloqueQueManejo = ui.helper;
                 var _thisBloqueQueSolapo = bloqueQueSolapo.data();
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
+                bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                 //TODO: Limitar zona de "tocado" como en blockly
                 var offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
                 if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)) {
