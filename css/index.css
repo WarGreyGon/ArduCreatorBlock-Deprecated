@@ -2,12 +2,10 @@
     font-family: "SFLight";
     src: url(../fonts/SFUI_Light.otf);
 }
-
 @font-face {
     font-family: "SFNSDisplayThin";
     src: url(../fonts/SFNS_Display_Thin.ttf);
 }
-
 *{
     padding: 0;
     margin: 0;
@@ -16,14 +14,12 @@
 body{
     background-color: #242038;
 }
-
 #title{
     font-family: "SFLight";
     color: #E5E3E3;
     font-size: 240%;
     margin-top: 2%;
 }
-
 #nav{
     background-color: #4B68E6;
     margin: 0;
@@ -31,7 +27,68 @@ body{
     height: 20%;
     padding: 1%;
 }
-
 #nave{
-    width: 15%;
+    width: 11%;
+}
+#robot{
+    width: 75%;
+}
+#content{
+    margin-top: 5%;
+}
+#formBox{
+    -webkit-border-radius: 5px 10px;  /*Safari*/
+    -moz-border-radius: 5px 10px;
+    background-color: #F5F4F4;
+    font-family: SFNSDisplayThin;
+    margin-top: 11%;
+}
+.blueTitle{
+    color: #00C7CD;
+    font-size: 200%;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 35%;
+    margin-bottom: 15%;
+}
+.label{
+    color: #000000;
+    font-weight: 200;
+    width: 70%;
+}
+.padLeftRight20{
+    padding-left: 20%;
+    padding-right: 20%;
+}
+.input{
+    width: 100%;
+    color: #000000;
+    font-size: 80%;
+    background-color: #F5F4F4;
+    margin-left: 3%;
+    margin-right: 3%;
+    padding-bottom: 2%;
+    border-bottom: 0.1px solid black;
+}
+.input:focus {
+    outline: 0px;
+}
+input:disabled{
+    color:#000000;
+}
+.button{
+    -webkit-border-radius: 40px;  /*Safari*/
+    -moz-border-radius: 40px;
+    border: 1px solid #00C7CD;
+    padding: 2% 15%;
+    font-size: 85%;
+    color: #00C7CD;
+    background-color: transparent;
+}
+.marginTopBot25{
+    margin-top: 25%;
+    margin-bottom: 25%;
+}
+button :hover{
+    background-color:grey;
 }
