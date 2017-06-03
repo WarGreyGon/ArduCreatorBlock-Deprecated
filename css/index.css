@@ -21,10 +21,10 @@ body{
     background-color: #4B68E6;
     height: 80px;
 }
-.container-nav{
+.Container-nav{
     height: 80px;
 }
-.container-nav a{
+.Container-nav a{
     line-height: 48px;
 }
 #title{
@@ -62,7 +62,7 @@ body{
     font-family: SFNSDisplayThin;
     margin-top: 6%;
 }
-.blueTitle{
+.BlueTitle{
     color: #00C7CD;
     font-size: 200%;
     font-weight: 800;
@@ -72,18 +72,20 @@ body{
 }
 @media only screen and (max-width: 768px) {
     /* For mobile phones: */
-    .blueTitle{padding-top:20%;}
+    .BlueTitle{padding-top:20%;}
 }
-.label{
+.Label{
     color: #000000;
     font-weight: 200;
+    font-size: 85%;
+    margin-left: 2%;
     width: 70%;
 }
-.padLeftRight20{
+.PadLeftRight20{
     padding-left: 15%;
     padding-right: 15%;
 }
-.input{
+.Input{
     width: 100%;
     color: #000000;
     font-size: 80%;
@@ -93,13 +95,13 @@ body{
     padding-bottom: 2%;
     border-bottom: 0.1px solid black;
 }
-.input:focus {
+.Input:focus {
     outline: 0px;
 }
 input:disabled{
     color:#000000;
 }
-.button{
+.Button{
     -webkit-border-radius: 40px;  /*Safari*/
     -moz-border-radius: 40px;
     border: 1px solid #00C7CD;
@@ -112,15 +114,15 @@ input:disabled{
     background-color: transparent;
 }
 @media only screen and (max-width: 920px) {
-    .button{width:45%;}
+    .Button{width:45%;}
 }
-.paddingTopBot20{
+.PaddingTopBot20{
     padding-top: 20%;
     padding-bottom: 30%;
 }
-.signin{
+.Signin{
     float:right;
 }
-.signup{
+.Signup{
     float:left;
 }
