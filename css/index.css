@@ -105,6 +105,7 @@ input:disabled{
     border: 1px solid #00C7CD;
     padding-top: 2%;
     padding-bottom: 2%;
+    text-align: center;
     width:35%;
     font-size: 85%;
     color: #00C7CD;

@@ -1,21 +1,19 @@
-$(function(){
-    $(".signup").on("click", function(){
-        if(!$("#divEmail").length){
+"use strict";
+$(function () {
+    $(".signup").on("click", function () {
+        if (!$("#divEmail").length) {
             createElement();
         }
-        else
-        {
-
+        else {
         }
     });
-    $(".signin").on("click", function(){
-        if($("#divEmail").length){
+    $(".signin").on("click", function () {
+        if ($("#divEmail").length) {
             removeElement();
         }
     });
 });
-
-function createElement(){
+function createElement() {
     $("#formContent").hide();
     var div = document.createElement("div");
     div.className = "form-group";
@@ -35,8 +33,7 @@ function createElement(){
     $(".signup").text("Enviar");
     $("#formContent").slideToggle();
 }
-
-function removeElement(){
+function removeElement() {
     $("#formContent").hide();
     $("#divEmail").remove();
     $(".signup").text("Registrarse");
