@@ -116,10 +116,10 @@ var BloqueArrastrable = (function () {
                         left: offsetAcopleMacho.left - leftAcopleHembra
                     });
                     switch (_thisBloqueQueManejo.modoDeAcople) {
+                        case "INTERNO":
                         case "BAJO":
                             _thisBloqueQueManejo.ultimBloqueSolapado.bloqueContiguo = _thisBloqueQueManejo;
                             break;
-                        case "INTERNO":
                         case "ALTO":
                             _thisBloqueQueManejo.bloqueContiguo = _thisBloqueQueSolapo;
                             break;
