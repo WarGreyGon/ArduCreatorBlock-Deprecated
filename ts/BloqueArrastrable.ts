@@ -2,10 +2,12 @@ class BloqueArrastrable{
 
     _this: BloqueArrastrable;
     miDiv: HTMLElement;
+
     miAcopleHembra: HTMLElement;
     miAcopleInterno: HTMLElement;
     miAcopleBajo: HTMLElement;
     misAcoples: HTMLElement[] = [];
+    ultimosAcoplesColisionados: HTMLElement[] = [];
 
     ultimBloqueSolapado: BloqueArrastrable;
 
@@ -39,9 +41,6 @@ class BloqueArrastrable{
 
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
-        let bloqueValido: boolean = false;
-        let modoDeAcople: string = "sinAcople";
-
         $(this.miDiv).draggable({
 
             containment: $('.areaBloques'),
@@ -58,32 +57,39 @@ class BloqueArrastrable{
                 let altoBloqueQueManejo = bloqueQueManejo.height();
                 let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
 
-                if (numeroBloquesQueContengo > 0)
-                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
+                // if (numeroBloquesQueContengo > 0)
+                //     _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
+
 
                 try{
 
-                    if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
+                    if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
 
-                        $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'})
-                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo).css({'background-color': 'blue'})
-                    } else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo).css({'background-color': 'blue'});
+                        $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'});
 
-                        $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'})
-                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({'background-color': 'blue'})
-                    } else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleBajo,  _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra)) {
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo];
 
-                        $(_thisBloqueQueManejo.miAcopleBajo).css({'background-color': 'blue'})
-                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({'background-color': 'blue'})
+                    } else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
+
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({'background-color': 'blue'});
+                        $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'});
+
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+
+                    } else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo)) {
+
+                        $(_thisBloqueQueManejo.miAcopleBajo).css({'background-color': 'blue'});
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({'background-color': 'blue'});
+
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
+
                     } else {
 
-                        _thisBloqueQueManejo.misAcoples.forEach(acople => {
-                            $(acople).css({'background-color': 'white'});
-                        });
+                        _thisBloqueQueManejo.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
+                        _thisBloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
 
-                        _thisBloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(acople => {
-                            $(acople).css({'background-color': 'white'});
-                        });
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [];
                     }
                 } catch (exception) {
                 }
@@ -104,17 +110,16 @@ class BloqueArrastrable{
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
                 bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
-
                 _thisBloqueQueManejo.ultimBloqueSolapado = _thisBloqueQueSolapo;
             },
 
             out: function(evento: Event, ui: JQuery) {
 
-                // let bloqueQueSolapo = $(evento.target);
-                // let bloqueQueManejo = ui.draggable;
-                // let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                // let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-                //
+                let bloqueQueSolapo = $(evento.target);
+                let bloqueQueManejo = ui.draggable;
+                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
                 // if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
                 //
                 //     _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
@@ -127,11 +132,11 @@ class BloqueArrastrable{
 
             drop: function (evento: Event, ui : JQuery) {
 
-                // let bloqueQueSolapo = $(evento.target);
-                // let bloqueQueManejo = ui.draggable;
-                // let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                // let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-                //
+                let bloqueQueSolapo = $(evento.target);
+                let bloqueQueManejo = ui.draggable;
+                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+
                 // if(_thisBloqueQueSolapo.bloquesQueContengo !== undefined && _thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1
                 //     && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
                 //
@@ -146,6 +151,24 @@ class BloqueArrastrable{
                 //
                 //     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 // }
+
+                if (_thisBloqueQueManejo.ultimosAcoplesColisionados.length > 0){
+
+                    let ultimosAcoplesColisionados = _thisBloqueQueManejo.ultimosAcoplesColisionados;
+
+                    let offsetAcopleMacho = $(ultimosAcoplesColisionados[1]).offset();
+
+                    let offsetAcopleHembra = $(ultimosAcoplesColisionados[0]).offset();
+                    let topAcopleHembra = ultimosAcoplesColisionados[0].offsetTop;
+                    let leftAcopleHembra = ultimosAcoplesColisionados[0].offsetLeft;
+
+                    let padreAcopleHembra = $(ultimosAcoplesColisionados[0]).parent();
+                    
+                    padreAcopleHembra.offset({
+                        top: offsetAcopleMacho.top - topAcopleHembra,
+                        left: offsetAcopleMacho.left - leftAcopleHembra
+                    });
+                }
             }
         });
     }
@@ -205,7 +228,7 @@ class BloqueArrastrable{
     }
 
 
-    acoplesHanSolapado(div1: HTMLElement, div2: HTMLElement): boolean {
+    divsColisionan(div1: HTMLElement, div2: HTMLElement): boolean {
 
         try {
 

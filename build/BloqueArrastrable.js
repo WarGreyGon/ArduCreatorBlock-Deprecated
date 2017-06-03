@@ -2,6 +2,7 @@
 var BloqueArrastrable = (function () {
     function BloqueArrastrable(categoria, tipo, elementoContenedor) {
         this.misAcoples = [];
+        this.ultimosAcoplesColisionados = [];
         this.bloquesQueContengo = [];
         var div = document.createElement("div");
         div.className = "BloqueArrastrable " + categoria;
@@ -15,8 +16,6 @@ var BloqueArrastrable = (function () {
         $(this.miDiv).data(this); //De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
     }
     BloqueArrastrable.prototype.arrastrarYSoltar = function (elementoContenedor) {
-        var bloqueValido = false;
-        var modoDeAcople = "sinAcople";
         $(this.miDiv).draggable({
             containment: $('.areaBloques'),
             cursor: 'move',
@@ -27,35 +26,31 @@ var BloqueArrastrable = (function () {
                 var numeroBloquesQueContengo = _thisBloqueQueManejo.bloquesQueContengo.length;
                 var altoBloqueQueManejo = bloqueQueManejo.height();
                 var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
-                if (numeroBloquesQueContengo > 0)
-                    _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
+                // if (numeroBloquesQueContengo > 0)
+                //     _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
                 try {
-                    if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
-                        // console.log("Acople por debajo")
-                        $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
+                    if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo).css({ 'background-color': 'blue' });
-                    }
-                    else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
-                        // console.log("Acople por dentro")
                         $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
-                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo];
                     }
-                    else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleBajo, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra)) {
-                        // console.log("Acople por arriba")
+                    else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
+                        $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+                    }
+                    else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo)) {
                         $(_thisBloqueQueManejo.miAcopleBajo).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({ 'background-color': 'blue' });
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
                     }
                     else {
-                        _thisBloqueQueManejo.misAcoples.forEach(function (acople) {
-                            $(acople).css({ 'background-color': 'white' });
-                        });
-                        _thisBloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(function (acople) {
-                            $(acople).css({ 'background-color': 'white' });
-                        });
+                        _thisBloqueQueManejo.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
+                        _thisBloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [];
                     }
                 }
                 catch (exception) {
-                    //console.log('No se ha solapado ningun bloque todavia')
                 }
             }
         });
@@ -71,11 +66,10 @@ var BloqueArrastrable = (function () {
                 _thisBloqueQueManejo.ultimBloqueSolapado = _thisBloqueQueSolapo;
             },
             out: function (evento, ui) {
-                // let bloqueQueSolapo = $(evento.target);
-                // let bloqueQueManejo = ui.draggable;
-                // let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                // let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-                //
+                var bloqueQueSolapo = $(evento.target);
+                var bloqueQueManejo = ui.draggable;
+                var _thisBloqueQueSolapo = bloqueQueSolapo.data();
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
                 // if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
                 //
                 //     _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
@@ -86,11 +80,10 @@ var BloqueArrastrable = (function () {
                 // }
             },
             drop: function (evento, ui) {
-                // let bloqueQueSolapo = $(evento.target);
-                // let bloqueQueManejo = ui.draggable;
-                // let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                // let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-                //
+                var bloqueQueSolapo = $(evento.target);
+                var bloqueQueManejo = ui.draggable;
+                var _thisBloqueQueSolapo = bloqueQueSolapo.data();
+                var _thisBloqueQueManejo = bloqueQueManejo.data();
                 // if(_thisBloqueQueSolapo.bloquesQueContengo !== undefined && _thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1
                 //     && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
                 //
@@ -105,6 +98,20 @@ var BloqueArrastrable = (function () {
                 //
                 //     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 // }
+                if (_thisBloqueQueManejo.ultimosAcoplesColisionados.length > 0) {
+                    var ultimosAcoplesColisionados = _thisBloqueQueManejo.ultimosAcoplesColisionados;
+                    var offsetAcopleMacho = $(ultimosAcoplesColisionados[1]).offset();
+                    var offsetAcopleHembra = $(ultimosAcoplesColisionados[0]).offset();
+                    var topAcopleHembra = ultimosAcoplesColisionados[0].offsetTop;
+                    var leftAcopleHembra = ultimosAcoplesColisionados[0].offsetLeft;
+                    var padreAcopleHembra = $(ultimosAcoplesColisionados[0]).parent();
+                    // console.log(posicionAcopleHembra.top + ", " + posicionAcopleHembra.left)
+                    padreAcopleHembra.offset({
+                        top: offsetAcopleMacho.top - topAcopleHembra,
+                        left: offsetAcopleMacho.left - leftAcopleHembra
+                    });
+                    // console.log("M:" + offsetAcopleMacho.top + ":" + offsetAcopleMacho.left + ", W:" + offsetAcopleHembra.top + ":" + offsetAcopleHembra.left + ", PW: " + posicionPadreAcopleHembra.top + ":" + posicionPadreAcopleHembra.left)
+                }
             }
         });
     };
@@ -144,7 +151,7 @@ var BloqueArrastrable = (function () {
                 break;
         }
     };
-    BloqueArrastrable.prototype.acoplesHanSolapado = function (div1, div2) {
+    BloqueArrastrable.prototype.divsColisionan = function (div1, div2) {
         try {
             var dqmArriba = $(div1).offset().top, dqmIzq = $(div1).offset().left, dqmAncho = $(div1).width(), dqmAlto = $(div1).height();
             var dqpsArriba = $(div2).offset().top, dqpsIzq = $(div2).offset().left, dqpsAncho = $(div2).width(), dqpsAlto = $(div2).height();
@@ -152,7 +159,6 @@ var BloqueArrastrable = (function () {
                 return true;
         }
         catch (exception) {
-            // console.log(exception)
         }
         return false;
     };
