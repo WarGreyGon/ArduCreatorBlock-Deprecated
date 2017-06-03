@@ -2,8 +2,16 @@ class BloqueArrastrable{
 
     _this: BloqueArrastrable;
     miDiv: HTMLElement;
+    miAcopleHembra: HTMLElement;
+    miAcopleInterno: HTMLElement;
+    miAcopleBajo: HTMLElement;
+
+    ultimBloqueSolapado: BloqueArrastrable;
+
     categoria: string;
     tipo: string;
+
+
     bloquesQueContengo: BloqueArrastrable[] = [];
 
 
@@ -19,8 +27,9 @@ class BloqueArrastrable{
         this.miDiv = div;
         this.categoria = categoria;
         this.tipo = tipo;
-        this.arrastrarYSoltar(elementoContenedor);
 
+        this.arrastrarYSoltar(elementoContenedor);
+        this.establecerZonasDeAcople();
         $(this.miDiv).data(this);//De este modo el div sabe de que objeto (BloqueArrastrable) es atributo
     }
 
@@ -30,7 +39,7 @@ class BloqueArrastrable{
     arrastrarYSoltar(elementoContenedor: HTMLElement): void{
 
         let bloqueValido: boolean = false;
-        let zonaDeAcople: number = 0;
+        let modoDeAcople: string = "sinAcople";
 
         $(this.miDiv).draggable({
 
@@ -40,6 +49,7 @@ class BloqueArrastrable{
             drag: function(evento: Event, ui: JQuery){
 
                 $('.menuBloques').css('width', '0');
+
                 let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
@@ -47,9 +57,24 @@ class BloqueArrastrable{
                 let altoBloqueQueManejo = bloqueQueManejo.height();
                 let bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
 
-                bloqueQueManejo.css('z-index', 0);
                 if (numeroBloquesQueContengo > 0)
                     _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
+
+                try{
+
+                    if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
+
+                        console.log("Acople por debajo")
+                    } else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
+
+                        console.log("Acople por dentro")
+                    } else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleBajo,  _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra)) {
+
+                        console.log("Acople por arriba")
+                    }
+                } catch (exception) {
+                    //console.log('No se ha solapado ningun bloque todavia')
+                }
             }
         });
 
@@ -62,64 +87,53 @@ class BloqueArrastrable{
             over: function(evento: Event, ui: JQuery) {
 
                 let bloqueQueSolapo = $(evento.target);
-                let bloqueQueManejo = ui.draggable;
                 let bloqueQueManejo = ui.helper;
                 let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
                 let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-                // bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);//<-----No funciona
                 bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
 
-                //TODO: Limitar zona de "tocado" como en blockly
-                let offsetTop = bloqueQueManejo.position().top - bloqueQueSolapo.position().top;
-                if(offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
-
-                    bloqueQueManejo.css({ 'border-top': 'solid green 5px' });
-                } else if (offsetTop <= bloqueQueSolapo.height() && offsetTop >= bloqueQueSolapo.height() - 15 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
-
-                }
+                _thisBloqueQueManejo.ultimBloqueSolapado = _thisBloqueQueSolapo;
             },
 
             out: function(evento: Event, ui: JQuery) {
 
-                let bloqueQueSolapo = $(evento.target);
-                let bloqueQueManejo = ui.draggable;
-                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-
-                if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
-
-                    _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
-                    let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
-                    let altoBloqueQueManejo = bloqueQueManejo.height();
-
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1)) + "px");
-                }
-
-                bloqueQueManejo.css({ 'border-top': 0 })
+                // let bloqueQueSolapo = $(evento.target);
+                // let bloqueQueManejo = ui.draggable;
+                // let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                // let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+                //
+                // if(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) > -1){
+                //
+                //     _thisBloqueQueSolapo.bloquesQueContengo.splice(_thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo), 1);
+                //     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                //     let altoBloqueQueManejo = bloqueQueManejo.height();
+                //
+                //     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1)) + "px");
+                // }
             },
 
             drop: function (evento: Event, ui : JQuery) {
 
-                let bloqueQueSolapo = $(evento.target);
-                let bloqueQueManejo = ui.draggable;
-                let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
-                let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
-
-                if(_thisBloqueQueSolapo.bloquesQueContengo !== undefined && _thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1 
-                && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
-
-                    let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
-                    let altoBloqueQueManejo = bloqueQueManejo.height();
-
-                    //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
-                    bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
-                    bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*altoBloqueQueManejo + 40);
-                    bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
-                    bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
-
-                    _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
-                }
+                // let bloqueQueSolapo = $(evento.target);
+                // let bloqueQueManejo = ui.draggable;
+                // let _thisBloqueQueSolapo: BloqueArrastrable = bloqueQueSolapo.data();
+                // let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
+                //
+                // if(_thisBloqueQueSolapo.bloquesQueContengo !== undefined && _thisBloqueQueSolapo.bloquesQueContengo.indexOf(_thisBloqueQueManejo) == -1
+                //     && _thisBloqueQueManejo.bloquesQueContengo.indexOf(_thisBloqueQueSolapo) == -1 && _thisBloqueQueSolapo.esCategoriaAceptable(_thisBloqueQueManejo.categoria)){
+                //
+                //     let numeroBloquesQueContengo: number = _thisBloqueQueSolapo.bloquesQueContengo.length;
+                //     let altoBloqueQueManejo = bloqueQueManejo.height();
+                //
+                //     //TODO: Cambiar esta asignacion de estilos por futuras clases o funcion
+                //     bloqueQueManejo.css('left', bloqueQueSolapo.position().left + 10);
+                //     bloqueQueManejo.css('top', bloqueQueSolapo.position().top + numeroBloquesQueContengo*altoBloqueQueManejo + 40);
+                //     bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
+                //     bloqueQueSolapo.css('height', (bloqueQueManejo.height()*(numeroBloquesQueContengo + 1) + 60) + "px");
+                //
+                //     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
+                // }
             }
         });
     }
@@ -140,6 +154,52 @@ class BloqueArrastrable{
             if(bloqueHijo.bloquesQueContengo.length > 0)
                 bloqueHijo.arrastrarHijosJuntoAPadre(bloqueHijo, bloqueHijo.bloquesQueContengo, zIndex);
         });
+    }
+
+
+    establecerZonasDeAcople(): void {
+
+        let miAcopleHembra;
+        let miAcopleInterno;
+        let miAcopleBajo;
+
+
+        miAcopleHembra = new ZonaDeAcople(this, "acopleHembra");
+        this.miAcopleHembra = miAcopleHembra.acopleHembra;
+
+        switch(this.categoria) {
+
+            case 'EstructuraBasica':
+                miAcopleInterno = new ZonaDeAcople(this, "acopleInterno");
+                this.miAcopleInterno = miAcopleInterno.acopleMacho;
+                miAcopleBajo = new ZonaDeAcople(this, "acopleBajo");
+                this.miAcopleBajo = miAcopleBajo.acopleMacho;
+                break;
+
+            case 'Funcion':
+            case 'Objeto':
+                miAcopleBajo = new ZonaDeAcople(this, "acopleBajo");
+                this.miAcopleBajo = miAcopleBajo.acopleMacho;
+                break;
+        }
+    }
+
+
+    acoplesHanSolapado(div1: HTMLElement, div2: HTMLElement): boolean {
+
+        try {
+
+            let dqmArriba = $(div1).offset().top, dqmIzq = $(div1).offset().left, dqmAncho = $(div1).width(), dqmAlto = $(div1).height();
+            let dqpsArriba = $(div2).offset().top, dqpsIzq = $(div2).offset().left, dqpsAncho = $(div2).width(), dqpsAlto = $(div2).height();
+
+            if(dqmIzq + dqmAncho > dqpsIzq && dqmIzq < dqpsIzq + dqpsAncho && dqmArriba + dqmAlto > dqpsArriba && dqmArriba < dqpsArriba + dqpsAlto)
+                return true;
+
+        } catch(exception) {
+            // console.log(exception)
+        }
+
+        return false;
     }
 
 
