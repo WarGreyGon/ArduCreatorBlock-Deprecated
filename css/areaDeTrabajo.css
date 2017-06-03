@@ -1,3 +1,5 @@
+body{width: 100vw; height: 100vh; overflow: hidden;}
+
 /*Estilos del menu*/
 .menu{width: 100%; float: left; background-color: #3f4546;}
 .botonMenu{height: 100%; margin: -0.2%; padding: 1%; display: inline-block; font-size: 1.8em; color: white;}
@@ -6,8 +8,8 @@
 
 
 /*Estilos del area de Trabajo*/
-.container{width: 90%}
-.areaDeTrabajo{width: 100; height: 75vh; border: solid #3fbfe8 10px; background-color: white; margin-top: 10%; position: relative;}
+.container{width: 100%; height: 100%;}
+.areaDeTrabajo{width: 100%; height: 90%; border: solid #3fbfe8 10px; background-color: white; margin-top: 5%; position: relative;}
 
 
 /*Estilos de la parte de bloques*/
