@@ -42,11 +42,13 @@ var BloqueArrastrable = (function () {
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
                         _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+                        _thisBloqueQueManejo.modoDeAcople = "INTERNO";
                     }
                     else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo)) {
                         $(_thisBloqueQueManejo.miAcopleBajo).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({ 'background-color': 'blue' });
-                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
+                        _thisBloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
+                        _thisBloqueQueManejo.modoDeAcople = "ALTO";
                     }
                     else {
                         _thisBloqueQueManejo.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
@@ -117,6 +119,10 @@ var BloqueArrastrable = (function () {
                         case "BAJO":
                             _thisBloqueQueManejo.ultimBloqueSolapado.bloqueContiguo = _thisBloqueQueManejo;
                             break;
+                        case "INTERNO":
+                        case "ALTO":
+                            _thisBloqueQueManejo.bloqueContiguo = _thisBloqueQueSolapo;
+                            break;
                     }
                 }
             }
@@ -124,11 +130,12 @@ var BloqueArrastrable = (function () {
     };
     BloqueArrastrable.prototype.arrastrasBloquesContiguos = function (bloque) {
         try {
+            // console.log(bloque)
             var offsetAcopleMacho = $(bloque.bloqueContiguo.ultimosAcoplesColisionados[1]).offset();
+            var bloqueContiguo = $(bloque.bloqueContiguo.miDiv);
             var offsetAcopleHembra = $(bloque.bloqueContiguo.miAcopleHembra).offset();
             var topAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetTop;
             var leftAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetLeft;
-            var bloqueContiguo = $(bloque.bloqueContiguo.miDiv);
             bloqueContiguo.offset({
                 top: offsetAcopleMacho.top - topAcopleHembra,
                 left: offsetAcopleMacho.left - leftAcopleHembra

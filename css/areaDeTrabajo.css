@@ -33,8 +33,8 @@ body{width: 100vw; height: 100vh; overflow: hidden;}
 
 /*Estilos de los bloques*/
 .BloqueEnMenu{transform: scale(0.7);}
-.BloqueArrastrable{ color: white; z-index: 0; position: absolute;}
-.ZonaDeAcople{width: 20px; height: 20px; position: absolute; margin-left: 80px; z-index: 0; border-radius:0 0 10px 10px; background-color: white;}
+.BloqueArrastrable{ color: white; z-index: 0; position: absolute; border: solid black 2px;}
+.ZonaDeAcople{width: 20px; height: 20px; position: absolute; margin-left: 20px; z-index: 0; border-radius:0 0 10px 10px; background-color: white;}
 .EstructuraBasica{background-color: #da2b40; width: 150px; height: 160px;}
 .Funcion{background-color: #95f709; width: 160px; height: 80px;}
 .Objeto{background-color: #feba34; width: 120px; height: 120px;}

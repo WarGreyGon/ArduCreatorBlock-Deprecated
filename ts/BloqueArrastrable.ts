@@ -81,13 +81,15 @@ class BloqueArrastrable{
                         $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'});
 
                         _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+                        _thisBloqueQueManejo.modoDeAcople = "INTERNO";
 
                     } else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo)) {
 
                         $(_thisBloqueQueManejo.miAcopleBajo).css({'background-color': 'blue'});
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({'background-color': 'blue'});
 
-                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
+                        _thisBloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
+                        _thisBloqueQueManejo.modoDeAcople = "ALTO";
 
                     } else {
 
@@ -179,6 +181,10 @@ class BloqueArrastrable{
                         case "BAJO":
                             _thisBloqueQueManejo.ultimBloqueSolapado.bloqueContiguo = _thisBloqueQueManejo;
                             break;
+                        case "INTERNO":
+                        case "ALTO":
+                            _thisBloqueQueManejo.bloqueContiguo = _thisBloqueQueSolapo;
+                            break;
                     }
                 }
             }
@@ -190,13 +196,14 @@ class BloqueArrastrable{
 
         try {
 
-            let offsetAcopleMacho = $(bloque.bloqueContiguo.ultimosAcoplesColisionados[1]).offset();
-            let offsetAcopleHembra = $(bloque.bloqueContiguo.miAcopleHembra).offset();
+            // console.log(bloque)
 
+            let offsetAcopleMacho = $(bloque.bloqueContiguo.ultimosAcoplesColisionados[1]).offset();
+            let bloqueContiguo = $(bloque.bloqueContiguo.miDiv);
+
+            let offsetAcopleHembra = $(bloque.bloqueContiguo.miAcopleHembra).offset();
             let topAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetTop;
             let leftAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetLeft;
-
-            let bloqueContiguo = $(bloque.bloqueContiguo.miDiv);
 
             bloqueContiguo.offset({
                 top: offsetAcopleMacho.top - topAcopleHembra,
