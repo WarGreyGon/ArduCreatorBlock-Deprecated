@@ -15,6 +15,7 @@ body{
     background-color: #242038;
     width: 100vw;
     height: 100vh;
+    _overflow-y: hidden;
 }
 #nav{
     background-color: #4B68E6;
@@ -31,25 +32,35 @@ body{
     color: #E5E3E3;
     font-size: 200%;
 }
+@media only screen and (max-width: 340px) {
+    /* For mobile phones: */
+    #title{font-size: 150%;}
+}
 #nave{
     width: 40px;
     display: block;
 }
 #robot{
-    width: 75%;
+    width: 650px;
+    margin-left: -12%;
 }
 #content{
     margin-top: 5%;
 }
-
-/* Formulario */
-
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    #robot{
+        margin-left:0;
+        margin-top:2%;
+    }
+}
+/* Form */
 #formBox{
     -webkit-border-radius: 5px 10px;  /*Safari*/
     -moz-border-radius: 5px 10px;
     background-color: #F5F4F4;
     font-family: SFNSDisplayThin;
-    margin-top: 11%;
+    margin-top: 3%;
 }
 .blueTitle{
     color: #00C7CD;
@@ -59,14 +70,18 @@ body{
     margin-top: 35%;
     margin-bottom: 15%;
 }
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .blueTitle{padding-top:20%;}
+}
 .label{
     color: #000000;
     font-weight: 200;
     width: 70%;
 }
 .padLeftRight20{
-    padding-left: 20%;
-    padding-right: 20%;
+    padding-left: 15%;
+    padding-right: 15%;
 }
 .input{
     width: 100%;
