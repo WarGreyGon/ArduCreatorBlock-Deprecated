@@ -5,6 +5,7 @@ class BloqueArrastrable{
     miAcopleHembra: HTMLElement;
     miAcopleInterno: HTMLElement;
     miAcopleBajo: HTMLElement;
+    misAcoples: HTMLElement[] = [];
 
     ultimBloqueSolapado: BloqueArrastrable;
 
@@ -64,16 +65,27 @@ class BloqueArrastrable{
 
                     if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
 
-                        console.log("Acople por debajo")
+                        $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'})
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo).css({'background-color': 'blue'})
                     } else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
 
-                        console.log("Acople por dentro")
+                        $(_thisBloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'})
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({'background-color': 'blue'})
                     } else if (_thisBloqueQueManejo.acoplesHanSolapado(_thisBloqueQueManejo.miAcopleBajo,  _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra)) {
 
-                        console.log("Acople por arriba")
+                        $(_thisBloqueQueManejo.miAcopleBajo).css({'background-color': 'blue'})
+                        $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({'background-color': 'blue'})
+                    } else {
+
+                        _thisBloqueQueManejo.misAcoples.forEach(acople => {
+                            $(acople).css({'background-color': 'white'});
+                        });
+
+                        _thisBloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(acople => {
+                            $(acople).css({'background-color': 'white'});
+                        });
                     }
                 } catch (exception) {
-                    //console.log('No se ha solapado ningun bloque todavia')
                 }
             }
         });
@@ -167,19 +179,27 @@ class BloqueArrastrable{
         miAcopleHembra = new ZonaDeAcople(this, "acopleHembra");
         this.miAcopleHembra = miAcopleHembra.acopleHembra;
 
+        this.misAcoples.push(miAcopleHembra.acopleHembra);
+
         switch(this.categoria) {
 
             case 'EstructuraBasica':
                 miAcopleInterno = new ZonaDeAcople(this, "acopleInterno");
                 this.miAcopleInterno = miAcopleInterno.acopleMacho;
+
                 miAcopleBajo = new ZonaDeAcople(this, "acopleBajo");
                 this.miAcopleBajo = miAcopleBajo.acopleMacho;
+
+                this.misAcoples.push(miAcopleInterno.acopleMacho);
+                this.misAcoples.push(miAcopleBajo.acopleMacho);
                 break;
 
             case 'Funcion':
             case 'Objeto':
                 miAcopleBajo = new ZonaDeAcople(this, "acopleBajo");
                 this.miAcopleBajo = miAcopleBajo.acopleMacho;
+
+                this.misAcoples.push(miAcopleBajo.acopleMacho);
                 break;
         }
     }
@@ -196,7 +216,6 @@ class BloqueArrastrable{
                 return true;
 
         } catch(exception) {
-            // console.log(exception)
         }
 
         return false;
