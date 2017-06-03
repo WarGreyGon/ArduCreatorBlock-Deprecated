@@ -16,21 +16,24 @@ body{
     width: 100vw;
     height: 100vh;
 }
+#nav{
+    background-color: #4B68E6;
+    height: 80px;
+}
+.container-nav{
+    height: 80px;
+}
+.container-nav a{
+    line-height: 48px;
+}
 #title{
     font-family: "SFLight";
     color: #E5E3E3;
-    font-size: 240%;
-    margin-top: 2%;
-}
-#nav{
-    background-color: #4B68E6;
-    margin: 0;
-    border: 0;
-    height: 10%;
-    padding: 1%;
+    font-size: 200%;
 }
 #nave{
-    width: 11%;
+    width: 40px;
+    display: block;
 }
 #robot{
     width: 75%;
@@ -38,6 +41,9 @@ body{
 #content{
     margin-top: 5%;
 }
+
+/* Formulario */
+
 #formBox{
     -webkit-border-radius: 5px 10px;  /*Safari*/
     -moz-border-radius: 5px 10px;
