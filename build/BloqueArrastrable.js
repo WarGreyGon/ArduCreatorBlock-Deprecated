@@ -3,6 +3,7 @@ var BloqueArrastrable = (function () {
     function BloqueArrastrable(categoria, tipo, elementoContenedor) {
         this.misAcoples = [];
         this.ultimosAcoplesColisionados = [];
+        this.modoDeAcople = "NA";
         this.bloquesQueContengo = [];
         var div = document.createElement("div");
         div.className = "BloqueArrastrable " + categoria;
@@ -28,11 +29,14 @@ var BloqueArrastrable = (function () {
                 var bloquesHijoDelQueManejo = _thisBloqueQueManejo.bloquesQueContengo;
                 // if (numeroBloquesQueContengo > 0)
                 //     _thisBloqueQueManejo.arrastrarHijosJuntoAPadre(_thisBloqueQueManejo, bloquesHijoDelQueManejo, 0);
+                if (_thisBloqueQueManejo.bloqueContiguo != undefined)
+                    _thisBloqueQueManejo.arrastrasBloquesContiguos(_thisBloqueQueManejo);
                 try {
                     if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo)) {
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
                         _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo];
+                        _thisBloqueQueManejo.modoDeAcople = "BAJO";
                     }
                     else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
@@ -105,15 +109,33 @@ var BloqueArrastrable = (function () {
                     var topAcopleHembra = ultimosAcoplesColisionados[0].offsetTop;
                     var leftAcopleHembra = ultimosAcoplesColisionados[0].offsetLeft;
                     var padreAcopleHembra = $(ultimosAcoplesColisionados[0]).parent();
-                    // console.log(posicionAcopleHembra.top + ", " + posicionAcopleHembra.left)
                     padreAcopleHembra.offset({
                         top: offsetAcopleMacho.top - topAcopleHembra,
                         left: offsetAcopleMacho.left - leftAcopleHembra
                     });
-                    // console.log("M:" + offsetAcopleMacho.top + ":" + offsetAcopleMacho.left + ", W:" + offsetAcopleHembra.top + ":" + offsetAcopleHembra.left + ", PW: " + posicionPadreAcopleHembra.top + ":" + posicionPadreAcopleHembra.left)
+                    switch (_thisBloqueQueManejo.modoDeAcople) {
+                        case "BAJO":
+                            _thisBloqueQueManejo.ultimBloqueSolapado.bloqueContiguo = _thisBloqueQueManejo;
+                            break;
+                    }
                 }
             }
         });
+    };
+    BloqueArrastrable.prototype.arrastrasBloquesContiguos = function (bloque) {
+        try {
+            var offsetAcopleMacho = $(bloque.bloqueContiguo.ultimosAcoplesColisionados[1]).offset();
+            var offsetAcopleHembra = $(bloque.bloqueContiguo.miAcopleHembra).offset();
+            var topAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetTop;
+            var leftAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetLeft;
+            var bloqueContiguo = $(bloque.bloqueContiguo.miDiv);
+            bloqueContiguo.offset({
+                top: offsetAcopleMacho.top - topAcopleHembra,
+                left: offsetAcopleMacho.left - leftAcopleHembra
+            });
+        }
+        catch (excepcion) {
+        }
     };
     BloqueArrastrable.prototype.arrastrarHijosJuntoAPadre = function (bloquePadre, bloquesHijoDelQueManejo, zIndex) {
         bloquesHijoDelQueManejo.forEach(function (bloqueHijo) {
