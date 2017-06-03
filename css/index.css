@@ -1,0 +1,128 @@
+@font-face {
+    font-family: "SFLight";
+    src: url(../fonts/SFUI_Light.otf);
+}
+@font-face {
+    font-family: "SFNSDisplayThin";
+    src: url(../fonts/SFNS_Display_Thin.ttf);
+}
+*{
+    padding: 0;
+    margin: 0;
+    border: 0
+}
+body{
+    background-color: #242038;
+    width: 100vw;
+    height: 100vh;
+    _overflow-y: hidden;
+}
+#nav{
+    background-color: #4B68E6;
+    height: 80px;
+}
+.Container-nav{
+    height: 80px;
+}
+.Container-nav a{
+    line-height: 48px;
+}
+#title{
+    font-family: "SFLight";
+    color: #E5E3E3;
+    font-size: 200%;
+}
+@media only screen and (max-width: 340px) {
+    /* For mobile phones: */
+    #title{font-size: 150%;}
+}
+#nave{
+    width: 40px;
+    display: block;
+}
+#robot{
+    width: 650px;
+    margin-left: -12%;
+}
+#content{
+    margin-top: 5%;
+}
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    #robot{
+        margin-left:0;
+        margin-top:2%;
+    }
+}
+/* Form */
+#formBox{
+    -webkit-border-radius: 5px 10px;  /*Safari*/
+    -moz-border-radius: 5px 10px;
+    background-color: #F5F4F4;
+    font-family: SFNSDisplayThin;
+    margin-top: 6%;
+}
+.BlueTitle{
+    color: #00C7CD;
+    font-size: 200%;
+    font-weight: 800;
+    text-align: center;
+    margin-top: 25%;
+    margin-bottom: 15%;
+}
+@media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .BlueTitle{padding-top:20%;}
+}
+.Label{
+    color: #000000;
+    font-weight: 200;
+    font-size: 85%;
+    margin-left: 2%;
+    width: 70%;
+}
+.PadLeftRight20{
+    padding-left: 15%;
+    padding-right: 15%;
+}
+.Input{
+    width: 100%;
+    color: #000000;
+    font-size: 80%;
+    background-color: #F5F4F4;
+    margin-left: 3%;
+    margin-right: 3%;
+    padding-bottom: 2%;
+    border-bottom: 0.1px solid black;
+}
+.Input:focus {
+    outline: 0px;
+}
+input:disabled{
+    color:#000000;
+}
+.Button{
+    -webkit-border-radius: 40px;  /*Safari*/
+    -moz-border-radius: 40px;
+    border: 1px solid #00C7CD;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    text-align: center;
+    width:35%;
+    font-size: 85%;
+    color: #00C7CD;
+    background-color: transparent;
+}
+@media only screen and (max-width: 920px) {
+    .Button{width:45%;}
+}
+.PaddingTopBot20{
+    padding-top: 20%;
+    padding-bottom: 30%;
+}
+.Signin{
+    float:right;
+}
+.Signup{
+    float:left;
+}

@@ -12,6 +12,7 @@
     "jquery": "^3.2.1"
   },
   "devDependencies": {
-    "@types/jquery": "^2.0.43"
+    "@types/jquery": "^2.0.43",
+    "@types/node": "^7.0.22"
   }
 }
