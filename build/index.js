@@ -1,14 +1,14 @@
 "use strict";
 $(function () {
-    $(".signup").on("click", function () {
-        if (!$("#divEmail").length) {
+    $(".Signup").on("click", function () {
+        if (!$("#divRegisterInput").length) {
             createElement();
         }
         else {
         }
     });
-    $(".signin").on("click", function () {
-        if ($("#divEmail").length) {
+    $(".Signin").on("click", function () {
+        if ($("#divRegisterInput").length) {
             removeElement();
         }
     });
@@ -17,26 +17,26 @@ function createElement() {
     $("#formContent").hide();
     var div = document.createElement("div");
     div.className = "form-group";
-    div.id = "divEmail";
+    div.id = "divRegisterInput";
     var label = document.createElement("label");
-    label.className = "label";
+    label.className = "Label";
     label.innerHTML = "CORREO ELECTRÓNICO";
     div.appendChild(label);
     var input = document.createElement("input");
-    input.className = "input";
+    input.className = "Input";
     input.type = "text";
     input.name = "email";
     input.placeholder = "Correo Electrónico";
     div.appendChild(input);
     $("#formContent").prepend(div);
-    $(".signin").text("Iniciar Sesión");
-    $(".signup").text("Enviar");
+    $(".Signin").text("Iniciar Sesión");
+    $(".Signup").text("Enviar");
     $("#formContent").slideToggle();
 }
 function removeElement() {
     $("#formContent").hide();
-    $("#divEmail").remove();
-    $(".signup").text("Registrarse");
-    $(".signin").text("Enviar");
+    $("#divRegisterInput").remove();
+    $(".Signup").text("Registrarse");
+    $(".Signin").text("Enviar");
     $("#formContent").slideToggle();
 }
