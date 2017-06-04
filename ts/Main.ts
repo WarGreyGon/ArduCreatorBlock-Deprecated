@@ -1,3 +1,5 @@
+let zonaDeCodigo: ZonaDeCodigo = new ZonaDeCodigo();
+
 $(".BloqueEnMenu").draggable({
 
     helper: 'clone',

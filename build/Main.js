@@ -1,4 +1,5 @@
 "use strict";
+var zonaDeCodigo = new ZonaDeCodigo();
 $(".BloqueEnMenu").draggable({
     helper: 'clone',
     cursor: 'move',
