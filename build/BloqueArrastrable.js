@@ -36,24 +36,25 @@ var BloqueArrastrable = (function () {
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
                         _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleBajo];
-                        _thisBloqueQueManejo.modoDeAcople = "BAJO";
+                        _thisBloqueQueManejo.modoDeAcople = "ALTO";
                     }
                     else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
-                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
-                        _thisBloqueQueManejo.modoDeAcople = "INTERNO";
+                        _thisBloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleHembra, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+                        _thisBloqueQueManejo.ultimBloqueSolapado.modoDeAcople = "INTERNO";
                     }
                     else if (_thisBloqueQueManejo.divsColisionan(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo)) {
                         $(_thisBloqueQueManejo.miAcopleBajo).css({ 'background-color': 'blue' });
                         $(_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({ 'background-color': 'blue' });
-                        _thisBloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [_thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, _thisBloqueQueManejo.miAcopleBajo];
-                        _thisBloqueQueManejo.modoDeAcople = "ALTO";
+                        _thisBloqueQueManejo.ultimosAcoplesColisionados = [_thisBloqueQueManejo.miAcopleBajo, _thisBloqueQueManejo.ultimBloqueSolapado.miAcopleHembra];
+                        _thisBloqueQueManejo.modoDeAcople = "BAJO";
                     }
                     else {
                         _thisBloqueQueManejo.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
                         _thisBloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
                         _thisBloqueQueManejo.ultimosAcoplesColisionados = [];
+                        _thisBloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
                     }
                 }
                 catch (exception) {
@@ -70,6 +71,7 @@ var BloqueArrastrable = (function () {
                 var _thisBloqueQueManejo = bloqueQueManejo.data();
                 bloqueQueManejo.css('z-index', bloqueQueSolapo.css('z-index') + 1);
                 _thisBloqueQueManejo.ultimBloqueSolapado = _thisBloqueQueSolapo;
+                _thisBloqueQueSolapo.ultimBloqueSolapado = _thisBloqueQueSolapo;
             },
             out: function (evento, ui) {
                 var bloqueQueSolapo = $(evento.target);
@@ -104,7 +106,26 @@ var BloqueArrastrable = (function () {
                 //
                 //     _thisBloqueQueSolapo.bloquesQueContengo.push(_thisBloqueQueManejo);
                 // }
-                if (_thisBloqueQueManejo.ultimosAcoplesColisionados.length > 0) {
+                if (_thisBloqueQueSolapo.ultimosAcoplesColisionados.length > 0) {
+                    var ultimosAcoplesColisionados = _thisBloqueQueSolapo.ultimosAcoplesColisionados;
+                    var offsetAcopleMacho = $(ultimosAcoplesColisionados[1]).offset();
+                    var offsetAcopleHembra = $(ultimosAcoplesColisionados[0]).offset();
+                    var topAcopleHembra = ultimosAcoplesColisionados[0].offsetTop;
+                    var leftAcopleHembra = ultimosAcoplesColisionados[0].offsetLeft;
+                    var padreAcopleHembra = $(ultimosAcoplesColisionados[0]).parent();
+                    padreAcopleHembra.offset({
+                        top: offsetAcopleMacho.top - topAcopleHembra,
+                        left: offsetAcopleMacho.left - leftAcopleHembra
+                    });
+                    _thisBloqueQueSolapo.bloqueContiguo = _thisBloqueQueManejo;
+                    // switch(_thisBloqueQueSolapo.modoDeAcople) {
+                    //
+                    //     case "INTERNO":
+                    //     case "BAJO":
+                    //         break;
+                    // }
+                }
+                else if (_thisBloqueQueManejo.ultimosAcoplesColisionados.length > 0) {
                     var ultimosAcoplesColisionados = _thisBloqueQueManejo.ultimosAcoplesColisionados;
                     var offsetAcopleMacho = $(ultimosAcoplesColisionados[1]).offset();
                     var offsetAcopleHembra = $(ultimosAcoplesColisionados[0]).offset();
@@ -115,31 +136,25 @@ var BloqueArrastrable = (function () {
                         top: offsetAcopleMacho.top - topAcopleHembra,
                         left: offsetAcopleMacho.left - leftAcopleHembra
                     });
-                    switch (_thisBloqueQueManejo.modoDeAcople) {
-                        case "INTERNO":
-                        case "BAJO":
-                            _thisBloqueQueManejo.ultimBloqueSolapado.bloqueContiguo = _thisBloqueQueManejo;
-                            break;
-                        case "ALTO":
-                            _thisBloqueQueManejo.bloqueContiguo = _thisBloqueQueSolapo;
-                            break;
-                    }
+                    _thisBloqueQueManejo.bloqueContiguo = _thisBloqueQueSolapo;
                 }
             }
         });
     };
-    BloqueArrastrable.prototype.arrastrasBloquesContiguos = function (bloque) {
+    BloqueArrastrable.prototype.arrastrasBloquesContiguos = function (bloqueQueArrastro) {
         try {
-            // console.log(bloque)
-            var offsetAcopleMacho = $(bloque.bloqueContiguo.ultimosAcoplesColisionados[1]).offset();
-            var bloqueContiguo = $(bloque.bloqueContiguo.miDiv);
-            var offsetAcopleHembra = $(bloque.bloqueContiguo.miAcopleHembra).offset();
-            var topAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetTop;
-            var leftAcopleHembra = bloque.bloqueContiguo.miAcopleHembra.offsetLeft;
-            bloqueContiguo.offset({
-                top: offsetAcopleMacho.top - topAcopleHembra,
-                left: offsetAcopleMacho.left - leftAcopleHembra
-            });
+            console.log(bloqueQueArrastro);
+            // let offsetAcopleMacho = $(bloqueQueArrastro.bloqueContiguo.ultimosAcoplesColisionados[1]).offset();
+            // let bloqueContiguo = $(bloqueQueArrastro.bloqueContiguo.miDiv);
+            //
+            // let offsetAcopleHembra = $(bloqueQueArrastro.miAcopleHembra).offset();
+            // let topAcopleHembra = bloqueQueArrastro.miAcopleHembra.offsetTop;
+            // let leftAcopleHembra = bloqueQueArrastro.miAcopleHembra.offsetLeft;
+            //
+            // bloqueContiguo.offset({
+            //     top: offsetAcopleMacho.top - topAcopleHembra,
+            //     left: offsetAcopleMacho.left - leftAcopleHembra
+            // });
         }
         catch (excepcion) {
         }
