@@ -23,7 +23,7 @@ body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 
 
 /*Estilos de los menus de bloques*/
-.menuBloques{height: 100%; width: 0; position: absolute; z-index: 1; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.5s;}
+.menuBloques{height: 100%; width: 0; position: absolute; z-index: 1; top: 0; left: 0; background-color: #242038; overflow-x: hidden; transition: 0.5s;}
 .opcionMenuBloques{width: 100%; padding: 5%; text-decoration: none; font-size: 1.5em; color: white; float: left; clear: both; transition: 0.5s; overflow: hidden;
     cursor: pointer; border: none;}
 .opcionMenuBloques:hover{transform: scale(1.2);}
@@ -44,5 +44,5 @@ body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 
 /*Estilos del area de codigo*/
 .areaCodigoGen{width: 30%; height: 100%; float: left; display: inline-block; overflow-y: scroll;}
-.TituloAreaCodigoGen {color: white; font-size: 2em; margin-top: 2%;}
+.TituloAreaCodigoGen {color: white; font-size: 2em; margin-top: 2%; margin-bottom: 2%;}
 .ContenedorDeTexto{margin-top: 2%; overflow: scroll; text-align: left;}
