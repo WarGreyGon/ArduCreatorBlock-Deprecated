@@ -45,4 +45,4 @@ body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 /*Estilos del area de codigo*/
 .areaCodigoGen{width: 30%; height: 100%; float: left; display: inline-block; overflow-y: scroll;}
 .TituloAreaCodigoGen {color: white; font-size: 2em; margin-top: 2%; margin-bottom: 2%;}
-.ContenedorDeTexto{margin-top: 2%; overflow: scroll; text-align: left;}
+.ContenedorDeTexto{margin-top: 2%; height: 90%; overflow: scroll; text-align: left; font-size: 1em;}
