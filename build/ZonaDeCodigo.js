@@ -13,10 +13,13 @@ var ZonaDeCodigo = (function () {
         var llavesApertura = codigoSinFormato.match(/\)(\s)*{/g);
         var codigoPreFormateadoPorLlavesApr = codigoSinFormato;
         codigoPreFormateadoPorLlavesApr = codigoPreFormateadoPorLlavesApr.replace(/\)(\s)*{/g, llavesApertura[0] + "\n");
-        var LlavesCierre = codigoPreFormateadoPorLlavesApr.match(/}(?!;+)/g);
+        var llavesCierre = codigoPreFormateadoPorLlavesApr.match(/}(?!;+)/g);
         var codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesApr;
-        codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + LlavesCierre[0]));
-        var codigoPreFormateadoALineas = codigoPreFormateadoPorLlavesCi.split("\n");
+        codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + llavesCierre[0]));
+        var elses = codigoPreFormateadoPorLlavesCi.match(/else(\s)*{/g);
+        var codigoPreFormateadoPorElses = codigoPreFormateadoPorLlavesCi;
+        codigoPreFormateadoPorElses = codigoPreFormateadoPorElses.replace(/else(\s)*{/g, (elses[0] + "\n"));
+        var codigoPreFormateadoALineas = codigoPreFormateadoPorElses.split("\n");
         codigoPreFormateadoALineas.forEach(function (linea) {
             linea = linea.trim();
             // if(linea.indexOf("{") > -1){
@@ -35,7 +38,6 @@ var ZonaDeCodigo = (function () {
             //
             //     linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
             // }
-            //
             // linea = this.colorearPalabras(linea);
             _this.codigoFormateado += linea + "\n";
         });

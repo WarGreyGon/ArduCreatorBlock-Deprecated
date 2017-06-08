@@ -24,16 +24,19 @@ class ZonaDeCodigo {
         let codigoPreFormateadoPorLlavesApr = codigoSinFormato;
         codigoPreFormateadoPorLlavesApr = codigoPreFormateadoPorLlavesApr.replace(/\)(\s)*{/g, llavesApertura[0] + "\n");
 
-        let LlavesCierre = codigoPreFormateadoPorLlavesApr.match(/}(?!;+)/g)
+        let llavesCierre = codigoPreFormateadoPorLlavesApr.match(/}(?!;+)/g)
         let codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesApr;
-        codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + LlavesCierre[0]));
+        codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + llavesCierre[0]));
 
+        let elses = codigoPreFormateadoPorLlavesCi.match(/else(\s)*{/g)
+        let codigoPreFormateadoPorElses = codigoPreFormateadoPorLlavesCi;
+        codigoPreFormateadoPorElses = codigoPreFormateadoPorElses.replace(/else(\s)*{/g, (elses[0] + "\n"));
 
-        let codigoPreFormateadoALineas: string[] = codigoPreFormateadoPorLlavesCi.split("\n");
+        let codigoPreFormateadoALineas: string[] = codigoPreFormateadoPorElses.split("\n");
         codigoPreFormateadoALineas.forEach(linea => {
 
             linea = linea.trim();
-            
+
             // if(linea.indexOf("{") > -1){
             //
             //     if(this.elTextoContiene(["if", "for", "do", "while"], linea))
@@ -50,7 +53,7 @@ class ZonaDeCodigo {
             //
             //     linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
             // }
-            //
+
             // linea = this.colorearPalabras(linea);
             this.codigoFormateado += linea + "\n";
         });
