@@ -1,7 +1,7 @@
-body{width: 100vw; height: 100vh; overflow: hidden;}
+body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 
 /*Estilos del menu*/
-.menu{width: 100%; float: left; background-color: #3f4546;}
+.menu{width: 100%; float: left; background-color: #4B68E6;}
 .botonMenu{height: 100%; margin: -0.2%; padding: 1%; display: inline-block; font-size: 1.8em; color: white;}
 .botonMenu:hover{background-color: #3fbfe8; color: white;}
 .botonMenuInicio{margin-left: 8%; /*background-color: #3fbfe8;*/}
@@ -9,11 +9,11 @@ body{width: 100vw; height: 100vh; overflow: hidden;}
 
 /*Estilos del area de Trabajo*/
 .container{width: 100%; height: 100%;}
-.areaDeTrabajo{width: 100%; height: 90%; border: solid #3fbfe8 10px; background-color: white; margin-top: 5%; position: relative;}
+.areaDeTrabajo{width: 100%; height: 90%; border: solid #3fbfe8 10px; background-color: #3f4546; margin-top: 4%; position: relative;}
 
 
 /*Estilos de la parte de bloques*/
-.areaBloques{width: 70%; height: 100%; border-right: solid #3fbfe8 10px; background-color: #3f4546; float: left; display: inline-block;
+.areaBloques{width: 20%; height: 100%; border-right: solid #3fbfe8 10px; background-color: white; float: left; display: inline-block;
     position: relative; background-repeat: no-repeat; background-attachment: fixed; background-position: 65% 87%;
     background-size: 8%}
 .papelera{width: auto; transform: scale(0.6); height: auto; position: absolute; right: 0; bottom: 0;}
@@ -23,7 +23,7 @@ body{width: 100vw; height: 100vh; overflow: hidden;}
 
 
 /*Estilos de los menus de bloques*/
-.menuBloques{height: 100%; width: 0; position: absolute; z-index: 1; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.5s;}
+.menuBloques{height: 100%; width: 0; position: absolute; z-index: 1; top: 0; left: 0; background-color: #242038; overflow-x: hidden; transition: 0.5s;}
 .opcionMenuBloques{width: 100%; padding: 5%; text-decoration: none; font-size: 1.5em; color: white; float: left; clear: both; transition: 0.5s; overflow: hidden;
     cursor: pointer; border: none;}
 .opcionMenuBloques:hover{transform: scale(1.2);}
@@ -43,4 +43,6 @@ body{width: 100vw; height: 100vh; overflow: hidden;}
 
 
 /*Estilos del area de codigo*/
-.areaCodigoGen{width: 29%; height: 100%; float: left; display: inline-block;}
+.areaCodigoGen{width: 80%; height: 100%; float: left; display: inline-block; overflow-y: scroll;}
+.TituloAreaCodigoGen {color: white; font-size: 2em; margin-top: 2%; margin-bottom: 2%;}
+.ContenedorDeTexto{margin-top: 2%; height: 90%; overflow: scroll; text-align: left; font-size: 1em;}
