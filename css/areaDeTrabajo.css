@@ -13,7 +13,7 @@ body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 
 
 /*Estilos de la parte de bloques*/
-.areaBloques{width: 70%; height: 100%; border-right: solid #3fbfe8 10px; background-color: white; float: left; display: inline-block;
+.areaBloques{width: 20%; height: 100%; border-right: solid #3fbfe8 10px; background-color: white; float: left; display: inline-block;
     position: relative; background-repeat: no-repeat; background-attachment: fixed; background-position: 65% 87%;
     background-size: 8%}
 .papelera{width: auto; transform: scale(0.6); height: auto; position: absolute; right: 0; bottom: 0;}
@@ -43,6 +43,6 @@ body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 
 
 /*Estilos del area de codigo*/
-.areaCodigoGen{width: 30%; height: 100%; float: left; display: inline-block; overflow-y: scroll;}
+.areaCodigoGen{width: 80%; height: 100%; float: left; display: inline-block; overflow-y: scroll;}
 .TituloAreaCodigoGen {color: white; font-size: 2em; margin-top: 2%; margin-bottom: 2%;}
 .ContenedorDeTexto{margin-top: 2%; height: 90%; overflow: scroll; text-align: left; font-size: 1em;}

@@ -20,47 +20,42 @@ class ZonaDeCodigo {
 
     establecerCodigoAFormatear(codigoSinFormato: string): void {
 
-        let lineas: string[] = [];
+        let llavesApertura = codigoSinFormato.match(/\)(\s)*{/g);
+        let codigoPreFormateadoPorLlavesApr = codigoSinFormato;
+        codigoPreFormateadoPorLlavesApr = codigoPreFormateadoPorLlavesApr.replace(/\)(\s)*{/g, llavesApertura[0] + "\n");
 
-        let codigoSpliteado: string[] = codigoSinFormato.split(" ");
-        let codigoPreFormateado: string = "";
+        let LlavesCierre = codigoPreFormateadoPorLlavesApr.match(/}(?!;+)/g)
+        let codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesApr;
+        codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + LlavesCierre[0]));
 
-        codigoSpliteado.forEach(palabra => {
 
-            if(['{', '}', ';'].indexOf(palabra) > -1 || palabra.indexOf(';') > -1)
-                palabra = palabra + "\n";
-            else
-                palabra = palabra + " ";
+        let codigoPreFormateadoALineas: string[] = codigoPreFormateadoPorLlavesCi.split("\n");
+        codigoPreFormateadoALineas.forEach(linea => {
 
-            codigoPreFormateado += palabra;
-        });
-
-        lineas = codigoPreFormateado.split("\n");
-
-        lineas.forEach(linea => {
-
-            if(linea.indexOf("{") > -1){
-
-                if(this.elTextoContiene(["if", "for", "do", "while"], linea))
-                    linea = "\n" + this.devolverSangria(this.nivelDeTabulacion) + linea;
-                else
-                    linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
-
-                this.nivelDeTabulacion ++;
-            } else if(linea.indexOf("}") > -1){
-
-                this.nivelDeTabulacion --;
-                linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
-            } else {
-
-                linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
-            }
-
-            linea = this.colorearPalabras(linea);
+            linea = linea.trim();
+            
+            // if(linea.indexOf("{") > -1){
+            //
+            //     if(this.elTextoContiene(["if", "for", "do", "while"], linea))
+            //         linea = "\n" + this.devolverSangria(this.nivelDeTabulacion) + linea;
+            //     else
+            //         linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
+            //
+            //     this.nivelDeTabulacion ++;
+            // } else if(linea.indexOf("}") > -1){
+            //
+            //     this.nivelDeTabulacion --;
+            //     linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
+            // } else {
+            //
+            //     linea = this.devolverSangria(this.nivelDeTabulacion) + linea;
+            // }
+            //
+            // linea = this.colorearPalabras(linea);
             this.codigoFormateado += linea + "\n";
         });
 
-        this.miDiv.innerHTML = this.codigoFormateado;
+        this.miDiv.innerHTML += this.codigoFormateado;
     }
 
 
