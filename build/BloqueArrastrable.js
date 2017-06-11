@@ -31,36 +31,32 @@ var BloqueArrastrable = (function () {
                         $(bloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
                         bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleBajo];
                         bloqueQueManejo.ultimBloqueSolapado.modoDeAcople = "BAJO";
-                        console.log("BAJO");
+                        // console.log("BAJO")
                     }
                     else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
                         $(bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
                         $(bloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
-                        bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
-                        bloqueQueManejo.ultimBloqueSolapado.modoDeAcople = "INTERNO";
-                        console.log("INTERNO");
+                        bloqueQueManejo.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+                        bloqueQueManejo.modoDeAcople = "INTERNO";
+                        // console.log("INTERNO")
                     }
                     else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, bloqueQueManejo.miAcopleBajo)) {
                         $(bloqueQueManejo.miAcopleBajo).css({ 'background-color': 'blue' });
                         $(bloqueQueManejo.ultimBloqueSolapado.miAcopleHembra).css({ 'background-color': 'blue' });
                         bloqueQueManejo.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleBajo, bloqueQueManejo.ultimBloqueSolapado.miAcopleHembra];
                         bloqueQueManejo.modoDeAcople = "ALTO";
-                        console.log("ALTO");
+                        // console.log("ALTO")
                     }
                     else {
                         bloqueQueManejo.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
                         bloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
-                        console.log("Vaciando ultimosAcoplesColisionados");
-                        // bloqueQueManejo.ultimosAcoplesColisionados = [];
-                        // bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
-                        console.log("NA");
+                        bloqueQueManejo.ultimosAcoplesColisionados = [];
+                        bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
+                        // console.log("NA")
                     }
                 }
                 catch (exception) {
-                    // console.log("EXCEPCION EN DRAGG")
-                    if (exception.message == "Cannot read property 'miAcopleBajo' of undefined")
-                        console.log("TODO BIEN");
-                    else
+                    if (exception.message != "Cannot read property 'miAcopleBajo' of undefined")
                         console.log(exception.message);
                 }
             }
@@ -85,15 +81,11 @@ var BloqueArrastrable = (function () {
                     var ultimosAcoplesColisionados = bloqueQueSolapo.ultimosAcoplesColisionados;
                     bloqueQueSolapo.imantarBloques(ultimosAcoplesColisionados);
                     bloqueQueSolapo.bloqueContiguo = bloqueQueManejo;
-                    console.log("Al soltar el bloque que voy a arrastrar luego:\n");
-                    console.log(bloqueQueSolapo);
                 }
                 else if (bloqueQueManejo.ultimosAcoplesColisionados.length > 0) {
                     var ultimosAcoplesColisionados = bloqueQueManejo.ultimosAcoplesColisionados;
                     bloqueQueManejo.imantarBloques(ultimosAcoplesColisionados);
                     bloqueQueManejo.bloqueContiguo = bloqueQueSolapo;
-                    console.log("Al soltar el bloque que voy a arrastrar luego:\n");
-                    console.log(bloqueQueManejo);
                 }
             }
         });
@@ -110,28 +102,9 @@ var BloqueArrastrable = (function () {
     };
     BloqueArrastrable.prototype.arrastrasBloquesContiguos = function (bloqueQueArrastro) {
         try {
-            console.log("El bloqueQueArrastro con su bloque contiguo: \n");
-            console.log(bloqueQueArrastro);
-            // let posicionHembra:number;
-            // let posicionMacho:number;
-            //
-            // if(bloqueQueArrastro.modoDeAcople == "ALTO"){
-            //     posicionHembra = 0;
-            //     posicionMacho = 1;
-            // } else if (bloqueQueArrastro.modoDeAcople == "INTERNO" || bloqueQueArrastro.modoDeAcople == "BAJO"){
-            //     posicionHembra = 1;
-            //     posicionMacho = 0;
-            // }
-            // let offsetAcopleMacho = $(bloqueQueArrastro.ultimosAcoplesColisionados[0]).offset();
-            //
-            // let topAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetTop;
-            // let leftAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetLeft;
-            //
-            // let bloqueContiguo = $(bloqueQueArrastro.bloqueContiguo.miDiv);
-            // bloqueContiguo.offset({
-            //     top: offsetAcopleMacho.top - topAcopleHembra,
-            //     left: offsetAcopleMacho.left - leftAcopleHembra
-            // });
+            console.log(bloqueQueArrastro.ultimosAcoplesColisionados);
+            var ultimosAcoplesColisionados = [bloqueQueArrastro.ultimosAcoplesColisionados[1], bloqueQueArrastro.ultimosAcoplesColisionados[0]];
+            this.imantarBloques(ultimosAcoplesColisionados);
         }
         catch (excepcion) {
             console.log("EXCEPCION EN MULTI-DRAGG");

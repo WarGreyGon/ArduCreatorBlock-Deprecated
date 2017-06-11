@@ -66,16 +66,16 @@ class BloqueArrastrable{
 
                         bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleBajo];
                         bloqueQueManejo.ultimBloqueSolapado.modoDeAcople = "BAJO";
-                        console.log("BAJO")
+                        // console.log("BAJO")
 
                     } else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno)) {
 
                         $(bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno).css({'background-color': 'blue'});
                         $(bloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'});
 
-                        bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
-                        bloqueQueManejo.ultimBloqueSolapado.modoDeAcople = "INTERNO";
-                        console.log("INTERNO")
+                        bloqueQueManejo.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimBloqueSolapado.miAcopleInterno];
+                        bloqueQueManejo.modoDeAcople = "INTERNO";
+                        // console.log("INTERNO")
 
                     } else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.ultimBloqueSolapado.miAcopleHembra, bloqueQueManejo.miAcopleBajo)) {
 
@@ -84,24 +84,22 @@ class BloqueArrastrable{
 
                         bloqueQueManejo.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleBajo, bloqueQueManejo.ultimBloqueSolapado.miAcopleHembra];
                         bloqueQueManejo.modoDeAcople = "ALTO";
-                        console.log("ALTO")
+                        // console.log("ALTO")
 
                     } else {
 
                         bloqueQueManejo.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
                         bloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
 
-                        console.log("\nVaciando ultimosAcoplesColisionados")
-                        // bloqueQueManejo.ultimosAcoplesColisionados = [];
-                        // bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
-                        console.log("NA")
+                        bloqueQueManejo.ultimosAcoplesColisionados = [];
+                        bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
+                        // console.log("NA")
 
                     }
+
                 } catch (exception) {
-                    // console.log("EXCEPCION EN DRAGG")
-                    if(exception.message == "Cannot read property 'miAcopleBajo' of undefined")
-                        console.log("TODO BIEN");
-                    else
+
+                    if(exception.message != "Cannot read property 'miAcopleBajo' of undefined")
                         console.log(exception.message);
                 }
             }
@@ -139,18 +137,12 @@ class BloqueArrastrable{
                     bloqueQueSolapo.imantarBloques(ultimosAcoplesColisionados);
                     bloqueQueSolapo.bloqueContiguo = bloqueQueManejo;
 
-                    console.log("\nAl soltar el bloque que voy a arrastrar luego:\n")
-                    console.log(bloqueQueSolapo)
-
                 } else if (bloqueQueManejo.ultimosAcoplesColisionados.length > 0) {//Acople alto
 
                     let ultimosAcoplesColisionados = bloqueQueManejo.ultimosAcoplesColisionados;
 
                     bloqueQueManejo.imantarBloques(ultimosAcoplesColisionados);
                     bloqueQueManejo.bloqueContiguo = bloqueQueSolapo;
-
-                    console.log("\nAl soltar el bloque que voy a arrastrar luego:\n")
-                    console.log(bloqueQueManejo)
                 }
             }
         });
@@ -175,30 +167,11 @@ class BloqueArrastrable{
     arrastrasBloquesContiguos(bloqueQueArrastro: BloqueArrastrable): void {
 
         try {
-            console.log("\nEl bloqueQueArrastro con su bloque contiguo: \n");
-            console.log(bloqueQueArrastro);
 
-            // let posicionHembra:number;
-            // let posicionMacho:number;
-            //
-            // if(bloqueQueArrastro.modoDeAcople == "ALTO"){
-            //     posicionHembra = 0;
-            //     posicionMacho = 1;
-            // } else if (bloqueQueArrastro.modoDeAcople == "INTERNO" || bloqueQueArrastro.modoDeAcople == "BAJO"){
-            //     posicionHembra = 1;
-            //     posicionMacho = 0;
-            // }
+            console.log(bloqueQueArrastro.ultimosAcoplesColisionados)
 
-            // let offsetAcopleMacho = $(bloqueQueArrastro.ultimosAcoplesColisionados[0]).offset();
-            //
-            // let topAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetTop;
-            // let leftAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetLeft;
-            //
-            // let bloqueContiguo = $(bloqueQueArrastro.bloqueContiguo.miDiv);
-            // bloqueContiguo.offset({
-            //     top: offsetAcopleMacho.top - topAcopleHembra,
-            //     left: offsetAcopleMacho.left - leftAcopleHembra
-            // });
+            let ultimosAcoplesColisionados = [bloqueQueArrastro.ultimosAcoplesColisionados[1], bloqueQueArrastro.ultimosAcoplesColisionados[0]];
+            this.imantarBloques(ultimosAcoplesColisionados);
 
         } catch (excepcion){
             console.log("EXCEPCION EN MULTI-DRAGG")
