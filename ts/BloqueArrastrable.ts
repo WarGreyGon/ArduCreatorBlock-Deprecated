@@ -54,8 +54,8 @@ class BloqueArrastrable{
                 let divQueManejo = ui.helper;
                 let bloqueQueManejo: BloqueArrastrable = divQueManejo.data();
 
-                // if (bloqueQueManejo.ultimosAcoplesColisionados.length > 0)
-                //     bloqueQueManejo.arrastrasBloquesContiguos(bloqueQueManejo);
+                if (bloqueQueManejo.ultimosAcoplesColisionados.length > 0)
+                    bloqueQueManejo.arrastrasBloquesContiguos(bloqueQueManejo);
 
                 try{
 
@@ -91,8 +91,9 @@ class BloqueArrastrable{
                         bloqueQueManejo.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
                         bloqueQueManejo.ultimBloqueSolapado.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
 
-                        bloqueQueManejo.ultimosAcoplesColisionados = [];
-                        bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
+                        console.log("\nVaciando ultimosAcoplesColisionados")
+                        // bloqueQueManejo.ultimosAcoplesColisionados = [];
+                        // bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados = [];
                         console.log("NA")
 
                     }
@@ -123,14 +124,6 @@ class BloqueArrastrable{
                 bloqueQueManejo.ultimBloqueSolapado = bloqueQueSolapo;
             },
 
-            out: function(evento: Event, ui: JQuery) {
-
-                // let divQueSolapo = $(evento.target);
-                // let divQueManejo = ui.draggable;
-                // let bloqueQueSolapo: BloqueArrastrable = divQueSolapo.data();
-                // let bloqueQueManejo: BloqueArrastrable = divQueManejo.data();
-            },
-
             drop: function (evento: Event, ui : JQuery) {
 
                 let divQueSolapo = $(evento.target);
@@ -138,12 +131,16 @@ class BloqueArrastrable{
                 let bloqueQueSolapo: BloqueArrastrable = divQueSolapo.data();
                 let bloqueQueManejo: BloqueArrastrable = divQueManejo.data();
 
-                if (bloqueQueManejo.ultimBloqueSolapado.ultimosAcoplesColisionados.length > 0){//Acoples bajo e interno
+
+                if (bloqueQueSolapo.ultimosAcoplesColisionados.length > 0){//Acoples bajo e interno
 
                     let ultimosAcoplesColisionados = bloqueQueSolapo.ultimosAcoplesColisionados;
 
                     bloqueQueSolapo.imantarBloques(ultimosAcoplesColisionados);
                     bloqueQueSolapo.bloqueContiguo = bloqueQueManejo;
+
+                    console.log("\nAl soltar el bloque que voy a arrastrar luego:\n")
+                    console.log(bloqueQueSolapo)
 
                 } else if (bloqueQueManejo.ultimosAcoplesColisionados.length > 0) {//Acople alto
 
@@ -151,6 +148,9 @@ class BloqueArrastrable{
 
                     bloqueQueManejo.imantarBloques(ultimosAcoplesColisionados);
                     bloqueQueManejo.bloqueContiguo = bloqueQueSolapo;
+
+                    console.log("\nAl soltar el bloque que voy a arrastrar luego:\n")
+                    console.log(bloqueQueManejo)
                 }
             }
         });
@@ -175,28 +175,30 @@ class BloqueArrastrable{
     arrastrasBloquesContiguos(bloqueQueArrastro: BloqueArrastrable): void {
 
         try {
-            // console.log(bloqueQueArrastro)
-            let posicionHembra:number;
-            let posicionMacho:number;
+            console.log("\nEl bloqueQueArrastro con su bloque contiguo: \n");
+            console.log(bloqueQueArrastro);
 
-            if(bloqueQueArrastro.modoDeAcople == "ALTO"){
-                posicionHembra = 1;
-                posicionMacho = 0;
-            } else if (bloqueQueArrastro.modoDeAcople == "ALTO" || bloqueQueArrastro.modoDeAcople == "ALTO"){
-                posicionHembra = 0;
-                posicionMacho = 1;
-            }
+            // let posicionHembra:number;
+            // let posicionMacho:number;
+            //
+            // if(bloqueQueArrastro.modoDeAcople == "ALTO"){
+            //     posicionHembra = 0;
+            //     posicionMacho = 1;
+            // } else if (bloqueQueArrastro.modoDeAcople == "INTERNO" || bloqueQueArrastro.modoDeAcople == "BAJO"){
+            //     posicionHembra = 1;
+            //     posicionMacho = 0;
+            // }
 
-            let offsetAcopleMacho = $(bloqueQueArrastro.ultimosAcoplesColisionados[0]).offset();
-
-            let topAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetTop;
-            let leftAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetLeft;
-
-            let bloqueContiguo = $(bloqueQueArrastro.bloqueContiguo.miDiv);
-            bloqueContiguo.offset({
-                top: offsetAcopleMacho.top - topAcopleHembra,
-                left: offsetAcopleMacho.left - leftAcopleHembra
-            });
+            // let offsetAcopleMacho = $(bloqueQueArrastro.ultimosAcoplesColisionados[0]).offset();
+            //
+            // let topAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetTop;
+            // let leftAcopleHembra = bloqueQueArrastro.ultimosAcoplesColisionados[1].offsetLeft;
+            //
+            // let bloqueContiguo = $(bloqueQueArrastro.bloqueContiguo.miDiv);
+            // bloqueContiguo.offset({
+            //     top: offsetAcopleMacho.top - topAcopleHembra,
+            //     left: offsetAcopleMacho.left - leftAcopleHembra
+            // });
 
         } catch (excepcion){
             console.log("EXCEPCION EN MULTI-DRAGG")
