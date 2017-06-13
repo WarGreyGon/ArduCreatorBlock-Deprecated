@@ -189,7 +189,7 @@ class BloqueArrastrable{
 
     arrastrasBloquesContiguos(bloqueQueArrastro: BloqueArrastrable): void {
 
-        
+
     }
 
 
@@ -243,29 +243,5 @@ class BloqueArrastrable{
         }
 
         return false;
-    }
-
-
-    esCategoriaAceptable(categoriaDelDraggable: string): boolean {
-
-        let esValido = false;
-
-        switch(this.categoria){
-
-            case 'EstructuraBasica':
-
-                ['EstructuraBasica', 'Funcion', 'Variable', 'Objeto'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
-                break;
-            case 'Funcion':
-            case 'Objeto':
-
-                ['Funcion', 'Variable'].forEach(c=>{if(c == categoriaDelDraggable)esValido = true;});
-                break;
-            case 'Variable':
-
-                return false;
-        }
-
-        return esValido;
     }
 }
