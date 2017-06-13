@@ -26,7 +26,7 @@ var ZonaDeAcople = (function () {
                 break;
             case this.ACOPLE_INTERNO:
                 $(this.acopleMacho).css({
-                    'top': $(bloqueContenedor.miDiv).position().top + $(bloqueContenedor.miDiv).height() - 120,
+                    'top': $(bloqueContenedor.miDiv).position().top + $(bloqueContenedor.miDiv).height() / 5 * 2,
                     'margin-left': '60px'
                 });
                 break;
