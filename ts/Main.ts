@@ -68,9 +68,9 @@ $('.papelera').droppable({
         let bloqueQueManejo = ui.helper;
         let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
-        eliminarHijos(_thisBloqueQueManejo.bloquesQueContengo);
-        bloqueQueManejo.empty();
-        bloqueQueManejo.remove();
+        // eliminarHijos(_thisBloqueQueManejo.bloquesQueContengo);
+        // bloqueQueManejo.empty();
+        // bloqueQueManejo.remove();
 
         unhover($(this))
     }
@@ -79,14 +79,14 @@ $('.papelera').droppable({
 
 function eliminarHijos(hijos: BloqueArrastrable[]){
 
-    hijos.forEach(hijo => {
-        if (hijo.bloquesQueContengo.length > 0){
-            eliminarHijos(hijo.bloquesQueContengo);
-        } else {
-            $(hijo.miDiv).empty();
-            $(hijo.miDiv).remove();
-        };
-    });
+    // hijos.forEach(hijo => {
+    //     if (hijo.bloquesQueContengo.length > 0){
+    //         eliminarHijos(hijo.bloquesQueContengo);
+    //     } else {
+    //         $(hijo.miDiv).empty();
+    //         $(hijo.miDiv).remove();
+    //     };
+    // });
 }
 
 

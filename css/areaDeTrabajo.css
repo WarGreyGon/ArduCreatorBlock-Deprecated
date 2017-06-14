@@ -33,9 +33,9 @@ body{width: 100vw; height: 100vh; overflow: hidden; background-color: #242038}
 
 /*Estilos de los bloques*/
 .BloqueEnMenu{transform: scale(0.7);}
-.BloqueArrastrable{ color: white; z-index: 0; position: absolute; border: solid black 2px;}
-.ZonaDeAcople{width: 20px; height: 20px; position: absolute; margin-left: 20px; z-index: 0; border-radius:0 0 10px 10px; background-color: white;}
-.EstructuraBasica{background-color: #da2b40; width: 150px; height: 160px;}
+.BloqueArrastrable{ color: white; z-index: 0; position: absolute; /*border: solid black 2px;*/}
+.ZonaDeAcople{width: 20px; height: 20px; position: absolute; margin-left: 25px; z-index: 0; border-radius:0 0 10px 10px; background-color: transparent;}
+.EstructuraBasica{/*background-color: #da2b40;*/ width: 200px; height: 117px;}
 .Funcion{background-color: #95f709; width: 160px; height: 80px;}
 .Objeto{background-color: #feba34; width: 120px; height: 120px;}
 .Variable{background-color: #0fc9c9; width: 80px; height: 40px;}
