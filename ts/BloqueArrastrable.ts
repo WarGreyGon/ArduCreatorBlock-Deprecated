@@ -14,6 +14,7 @@ class BloqueArrastrable{
 
     categoria: string;
     tipo: string;
+    miCodigo: string = "";
 
     bloqueContiguo: BloqueArrastrable;
     bloqueInterno: BloqueArrastrable;
@@ -65,8 +66,8 @@ class BloqueArrastrable{
 
                     if (bloqueQueManejo.divsColisionan(bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo)) {
 
-                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo).css({'background-color': 'blue'});
-                        $(bloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'});
+                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo).css({'background-color': 'white'});
+                        $(bloqueQueManejo.miAcopleHembra).css({'background-color': 'white'});
 
                         bloqueQueManejo.ultimoBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo];
                         bloqueQueManejo.ultimoBloqueSolapado.modoDeAcople = "BAJO";
@@ -74,8 +75,8 @@ class BloqueArrastrable{
 
                     } else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno)) {
 
-                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno).css({'background-color': 'blue'});
-                        $(bloqueQueManejo.miAcopleHembra).css({'background-color': 'blue'});
+                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno).css({'background-color': 'white'});
+                        $(bloqueQueManejo.miAcopleHembra).css({'background-color': 'white'});
 
                         bloqueQueManejo.ultimoBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno];
                         bloqueQueManejo.ultimoBloqueSolapado.modoDeAcople = "INTERNO";
@@ -83,8 +84,8 @@ class BloqueArrastrable{
 
                     } else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra, bloqueQueManejo.miAcopleBajo)) {
 
-                        $(bloqueQueManejo.miAcopleBajo).css({'background-color': 'blue'});
-                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra).css({'background-color': 'blue'});
+                        $(bloqueQueManejo.miAcopleBajo).css({'background-color': 'white'});
+                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra).css({'background-color': 'white'});
 
                         bloqueQueManejo.ultimosAcoplesColisionados = [bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra, bloqueQueManejo.miAcopleBajo];
                         bloqueQueManejo.modoDeAcople = "ALTO";
@@ -92,8 +93,8 @@ class BloqueArrastrable{
 
                     } else {
 
-                        bloqueQueManejo.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
-                        bloqueQueManejo.ultimoBloqueSolapado.misAcoples.forEach(acople => { $(acople).css({'background-color': 'white'}); });
+                        bloqueQueManejo.misAcoples.forEach(acople => { $(acople).css({'background-color': 'transparent'}); });
+                        bloqueQueManejo.ultimoBloqueSolapado.misAcoples.forEach(acople => { $(acople).css({'background-color': 'transparent'}); });
 
                         bloqueQueManejo.resetearCondicionesDeAcople(bloqueQueManejo, bloqueQueManejo.ultimoBloqueSolapado);
                         // console.log("NA")
@@ -189,7 +190,8 @@ class BloqueArrastrable{
 
     arrastrasBloquesContiguos(bloqueQueArrastro: BloqueArrastrable): void {
 
-
+        //TODO: Añadir a un array, por ej: grupoDeBloquesParaArrastrar todos los bloques que queramos arrastrar y con JQuery
+        // y el metodo translate() de CSS
     }
 
 

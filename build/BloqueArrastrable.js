@@ -4,6 +4,7 @@ var BloqueArrastrable = (function () {
         this.misAcoples = [];
         this.ultimosAcoplesColisionados = [];
         this.modoDeAcople = "NA";
+        this.miCodigo = "";
         var div = document.createElement("div");
         div.className = "BloqueArrastrable " + categoria;
         $(div).css({ 'background-image': 'url("imgs/If.png")' });
@@ -30,29 +31,29 @@ var BloqueArrastrable = (function () {
                     console.log("bloqueInterno: " + bloqueQueManejo.bloqueInterno.tipo + "-" + bloqueQueManejo.ultimoBloqueSolapado.bloqueContiguo);
                 try {
                     if (bloqueQueManejo.divsColisionan(bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo)) {
-                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo).css({ 'background-color': 'blue' });
-                        $(bloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
+                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo).css({ 'background-color': 'white' });
+                        $(bloqueQueManejo.miAcopleHembra).css({ 'background-color': 'white' });
                         bloqueQueManejo.ultimoBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleBajo];
                         bloqueQueManejo.ultimoBloqueSolapado.modoDeAcople = "BAJO";
                         // console.log("BAJO")
                     }
                     else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno)) {
-                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno).css({ 'background-color': 'blue' });
-                        $(bloqueQueManejo.miAcopleHembra).css({ 'background-color': 'blue' });
+                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno).css({ 'background-color': 'white' });
+                        $(bloqueQueManejo.miAcopleHembra).css({ 'background-color': 'white' });
                         bloqueQueManejo.ultimoBloqueSolapado.ultimosAcoplesColisionados = [bloqueQueManejo.miAcopleHembra, bloqueQueManejo.ultimoBloqueSolapado.miAcopleInterno];
                         bloqueQueManejo.ultimoBloqueSolapado.modoDeAcople = "INTERNO";
                         // console.log("INTERNO")
                     }
                     else if (bloqueQueManejo.divsColisionan(bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra, bloqueQueManejo.miAcopleBajo)) {
-                        $(bloqueQueManejo.miAcopleBajo).css({ 'background-color': 'blue' });
-                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra).css({ 'background-color': 'blue' });
+                        $(bloqueQueManejo.miAcopleBajo).css({ 'background-color': 'white' });
+                        $(bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra).css({ 'background-color': 'white' });
                         bloqueQueManejo.ultimosAcoplesColisionados = [bloqueQueManejo.ultimoBloqueSolapado.miAcopleHembra, bloqueQueManejo.miAcopleBajo];
                         bloqueQueManejo.modoDeAcople = "ALTO";
                         // console.log("ALTO")
                     }
                     else {
-                        bloqueQueManejo.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
-                        bloqueQueManejo.ultimoBloqueSolapado.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'white' }); });
+                        bloqueQueManejo.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'transparent' }); });
+                        bloqueQueManejo.ultimoBloqueSolapado.misAcoples.forEach(function (acople) { $(acople).css({ 'background-color': 'transparent' }); });
                         bloqueQueManejo.resetearCondicionesDeAcople(bloqueQueManejo, bloqueQueManejo.ultimoBloqueSolapado);
                         // console.log("NA")
                     }
@@ -122,19 +123,10 @@ var BloqueArrastrable = (function () {
             bloqueQueManejo.bloqueInterno = undefined;
         }
     };
-    // arrastrasBloquesContiguos(bloqueQueArrastro: BloqueArrastrable): void {
-    //
-    //     try {
-    //
-    //         this.imantarBloques(bloqueQueArrastro.ultimosAcoplesColisionados);
-    //
-    //         if(bloqueQueArrastro.bloqueContiguo != null)
-    //             this.arrastrasBloquesContiguos(bloqueQueArrastro.bloqueContiguo);
-    //     } catch (excepcion){
-    //         console.log("EXCEPCION EN MULTI-DRAGG")
-    //         console.log(excepcion)
-    //     }
-    // }
+    BloqueArrastrable.prototype.arrastrasBloquesContiguos = function (bloqueQueArrastro) {
+        //TODO: Añadir a un array, por ej: grupoDeBloquesParaArrastrar todos los bloques que queramos arrastrar y con JQuery
+        // y el metodo translate() de CSS
+    };
     BloqueArrastrable.prototype.establecerZonasDeAcople = function () {
         var miAcopleHembra;
         var miAcopleInterno;
@@ -169,23 +161,6 @@ var BloqueArrastrable = (function () {
         catch (exception) {
         }
         return false;
-    };
-    BloqueArrastrable.prototype.esCategoriaAceptable = function (categoriaDelDraggable) {
-        var esValido = false;
-        switch (this.categoria) {
-            case 'EstructuraBasica':
-                ['EstructuraBasica', 'Funcion', 'Variable', 'Objeto'].forEach(function (c) { if (c == categoriaDelDraggable)
-                    esValido = true; });
-                break;
-            case 'Funcion':
-            case 'Objeto':
-                ['Funcion', 'Variable'].forEach(function (c) { if (c == categoriaDelDraggable)
-                    esValido = true; });
-                break;
-            case 'Variable':
-                return false;
-        }
-        return esValido;
     };
     return BloqueArrastrable;
 }());
