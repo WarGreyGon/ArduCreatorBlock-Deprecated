@@ -47,8 +47,8 @@ $('.papelera').droppable({
         var bloqueQueManejo = ui.helper;
         var _thisBloqueQueManejo = bloqueQueManejo.data();
         // eliminarHijos(_thisBloqueQueManejo.bloquesQueContengo);
-        // bloqueQueManejo.empty();
-        // bloqueQueManejo.remove();
+        bloqueQueManejo.empty();
+        bloqueQueManejo.remove();
         unhover($(this));
     }
 });

@@ -69,8 +69,8 @@ $('.papelera').droppable({
         let _thisBloqueQueManejo: BloqueArrastrable = bloqueQueManejo.data();
 
         // eliminarHijos(_thisBloqueQueManejo.bloquesQueContengo);
-        // bloqueQueManejo.empty();
-        // bloqueQueManejo.remove();
+        bloqueQueManejo.empty();
+        bloqueQueManejo.remove();
 
         unhover($(this))
     }
