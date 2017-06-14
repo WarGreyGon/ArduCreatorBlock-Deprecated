@@ -5,6 +5,7 @@ var BloqueArrastrable = (function () {
         this.ultimosAcoplesColisionados = [];
         this.modoDeAcople = "NA";
         this.miCodigo = "";
+        this.miExpresionBooleana = " a > g ";
         var div = document.createElement("div");
         div.className = "BloqueArrastrable " + categoria;
         $(div).css({ 'background-image': 'url("imgs/If.png")' });
@@ -62,6 +63,9 @@ var BloqueArrastrable = (function () {
                     if (exception.message != "Cannot read property 'miAcopleBajo' of undefined")
                         console.log(exception.message);
                 }
+            },
+            stop: function (evento, ui) {
+                $('.areaBloques').change();
             }
         });
         $(this.miDiv).droppable({
@@ -100,6 +104,9 @@ var BloqueArrastrable = (function () {
                 }
             }
         });
+    };
+    BloqueArrastrable.prototype.devolverMiCodigo = function () {
+        return this.tipo.toLowerCase() + "( " + this.miExpresionBooleana + " ){  }";
     };
     BloqueArrastrable.prototype.imantarBloques = function (ultimosAcoplesColisionados) {
         var offsetAcopleMacho = $(ultimosAcoplesColisionados[1]).offset();

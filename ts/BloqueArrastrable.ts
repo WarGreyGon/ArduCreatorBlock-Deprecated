@@ -15,6 +15,7 @@ class BloqueArrastrable{
     categoria: string;
     tipo: string;
     miCodigo: string = "";
+    miExpresionBooleana = " a > g ";
 
     bloqueContiguo: BloqueArrastrable;
     bloqueInterno: BloqueArrastrable;
@@ -105,6 +106,11 @@ class BloqueArrastrable{
                     if(exception.message != "Cannot read property 'miAcopleBajo' of undefined")
                         console.log(exception.message);
                 }
+            },
+
+            stop: function(evento: Event, ui: JQuery){
+
+                $('.areaBloques').change();
             }
         });
 
@@ -155,6 +161,12 @@ class BloqueArrastrable{
                 }
             }
         });
+    }
+
+
+    devolverMiCodigo():string {
+
+        return this.tipo.toLowerCase() + "( " + this.miExpresionBooleana + " ){  }"
     }
 
 

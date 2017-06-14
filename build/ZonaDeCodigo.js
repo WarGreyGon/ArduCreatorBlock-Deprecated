@@ -8,17 +8,37 @@ var ZonaDeCodigo = (function () {
         this.palabrasReservadas = ["if", "else", "do", "while", "for"];
         this.miDiv = $('.ContenedorDeTexto').get(0);
     }
+    ZonaDeCodigo.prototype.vaciarCodigo = function () {
+        this.miDiv.innerHTML = "";
+        this.codigoSinFormato = "";
+        this.codigoFormateado = "";
+    };
     ZonaDeCodigo.prototype.establecerCodigoAFormatear = function (codigoSinFormato) {
         var _this = this;
         var llavesApertura = codigoSinFormato.match(/\)(\s)*{/g);
         var codigoPreFormateadoPorLlavesApr = codigoSinFormato;
-        codigoPreFormateadoPorLlavesApr = codigoPreFormateadoPorLlavesApr.replace(/\)(\s)*{/g, llavesApertura[0] + "\n");
+        try {
+            codigoPreFormateadoPorLlavesApr = codigoPreFormateadoPorLlavesApr.replace(/\)(\s)*{/g, llavesApertura[0] + "\n");
+        }
+        catch (exception) {
+            console.log(exception.message);
+        }
         var llavesCierre = codigoPreFormateadoPorLlavesApr.match(/}(?!;+)/g);
         var codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesApr;
-        codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + llavesCierre[0]));
+        try {
+            codigoPreFormateadoPorLlavesCi = codigoPreFormateadoPorLlavesCi.replace(/}(?!;+)/g, ("\n" + llavesCierre[0]));
+        }
+        catch (exception) {
+            console.log(exception.message);
+        }
         var elses = codigoPreFormateadoPorLlavesCi.match(/else(\s)*{/g);
         var codigoPreFormateadoPorElses = codigoPreFormateadoPorLlavesCi;
-        codigoPreFormateadoPorElses = codigoPreFormateadoPorElses.replace(/else(\s)*{/g, (elses[0] + "\n"));
+        try {
+            codigoPreFormateadoPorElses = codigoPreFormateadoPorElses.replace(/else(\s)*{/g, (elses[0] + "\n"));
+        }
+        catch (exception) {
+            console.log(exception.message);
+        }
         var fors = codigoPreFormateadoPorElses.match(/for(\s)*\((.)+\)(\s)*{/g);
         var forsFormateadosTemporal = [];
         fors.forEach(function (cadaFor) { forsFormateadosTemporal.push(cadaFor.replace(/;/g, ";¬")); });
